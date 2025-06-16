@@ -11,25 +11,29 @@
 }
 
 .reportsSection {
-  background: #1a1a1a;
-  border-radius: 10px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 3rem;
 }
 
 .reportsSection h2 {
   color: #e5e7eb;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
-  border-bottom: 2px solid #2d2d2d;
-  padding-bottom: 0.5rem;
 }
 
 .reportsGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
+  align-items: start;
+}
+
+/* Local reports grid */
+.localReportsGrid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* Online reports grid */
+.onlineReportsGrid {
+  grid-template-columns: repeat(8, 1fr);
 }
 
 .statusColumn {
@@ -43,23 +47,6 @@
   position: relative;
 }
 
-.statusColumn.dragOver {
-  background-color: rgba(59, 130, 246, 0.1);
-  border: 2px dashed #3b82f6;
-}
-
-.statusColumn.invalidDrop {
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 2px dashed #ef4444;
-  animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
-}
-
 .statusColumn h3 {
   color: #e5e7eb;
   font-size: 1.2rem;
@@ -67,6 +54,7 @@
   border-bottom: 2px solid;
 }
 
+/* Local reports colors */
 .newReports h3 {
   border-color: #d4a373;
 }
@@ -83,33 +71,131 @@
   border-color: #16a34a;
 }
 
+.cancelled h3 {
+  border-color: #ef4444;
+}
+
+/* Online reports colors */
+.approved h3 {
+  border-color: #14b8a6;
+}
+
+.inTransport h3 {
+  border-color: #f59e0b;
+}
+
+.readyToShip h3 {
+  border-color: #8b5cf6;
+}
+
+.shipped h3 {
+  border-color: #ec4899;
+}
+
+.delivered h3 {
+  border-color: #22c55e;
+}
+
+.rejected h3 {
+  border-color: #ef4444;
+}
+
+.statusColumn.dragOver {
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 2px dashed #3b82f6;
+}
+
+.cancelled.dragOver,
+.rejected.dragOver {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 2px dashed #ef4444;
+}
+
+.statusColumn.invalidDrop {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 2px dashed #ef4444;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
 .reportCard {
   background: #2d2d2d;
   padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid #404040;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: move;
 }
 
+/* Local reports card backgrounds */
 .newReports .reportCard {
+  background: rgba(212, 163, 115, 0.1);
   border-left: 4px solid #d4a373;
 }
 
 .inProgress .reportCard {
+  background: rgba(30, 64, 175, 0.1);
   border-left: 4px solid #1e40af;
 }
 
 .readyForPickup .reportCard {
+  background: rgba(59, 130, 246, 0.1);
   border-left: 4px solid #3b82f6;
 }
 
 .completed .reportCard {
+  background: rgba(22, 163, 74, 0.1);
   border-left: 4px solid #16a34a;
+}
+
+.cancelled .reportCard {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
+}
+
+/* Online reports card backgrounds */
+.approved .reportCard {
+  background: rgba(20, 184, 166, 0.1);
+  border-left: 4px solid #14b8a6;
+}
+
+.inTransport .reportCard {
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid #f59e0b;
+}
+
+.readyToShip .reportCard {
+  background: rgba(139, 92, 246, 0.1);
+  border-left: 4px solid #8b5cf6;
+}
+
+.shipped .reportCard {
+  background: rgba(236, 72, 153, 0.1);
+  border-left: 4px solid #ec4899;
+}
+
+.delivered .reportCard {
+  background: rgba(34, 197, 94, 0.1);
+  border-left: 4px solid #22c55e;
+}
+
+.rejected .reportCard {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
 }
 
 .reportCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.reportCard.dragging {
+  opacity: 0.8;
+  transform: scale(1.02);
 }
 
 .reportCard h4 {
@@ -124,22 +210,23 @@
   font-size: 0.95rem;
 }
 
-@media (max-width: 1200px) {
-  .reportsGrid {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 1400px) {
+  .localReportsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .onlineReportsGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (max-width: 768px) {
+  .localReportsGrid,
+  .onlineReportsGrid {
+    grid-template-columns: 1fr;
+  }
+  
   .content {
     padding: 1rem;
-  }
-
-  .reportsSection {
-    padding: 1rem;
-  }
-
-  .reportsGrid {
-    grid-template-columns: 1fr;
   }
 } 
