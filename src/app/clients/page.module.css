@@ -1,0 +1,281 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #111111;
+  color: #e5e7eb;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.tableHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.pageSizeSelectWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pageSizeLabel {
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+
+.pageSizeSelect {
+  background: #232323;
+  color: #e5e7eb;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 0.3em 1em;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.pageSizeSelect:focus {
+  border-color: #2563eb;
+}
+
+.tablesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.clientsTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #232323;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.clientsTable th,
+.clientsTable td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.clientsTable th {
+  background: #181818;
+  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.clientsTable tr {
+  background: #232323;
+  transition: background 0.2s;
+}
+
+.clientsTable tr:hover {
+  background: #282828;
+}
+
+.selectedRow {
+  background: #1e40af !important;
+}
+
+.nameCell {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.detailsButton {
+  background: #fff;
+  color: #232323;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  padding: 0.4em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.detailsButton:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.repairsSection {
+  background: #232323;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.repairsSection h3 {
+  margin: 0 0 1rem 0;
+  color: #e5e7eb;
+  font-size: 1.2rem;
+}
+
+.noRepairs {
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem;
+}
+
+.repairsTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #181818;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.repairsTable th,
+.repairsTable td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+.repairsTable th {
+  background: #111111;
+  color: #e5e7eb;
+  font-weight: 600;
+}
+
+.repairsTable tr {
+  background: #181818;
+  transition: background 0.2s;
+}
+
+.repairsTable tr:hover {
+  background: #1f1f1f;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 1.5rem 0 0 0;
+  padding: 0.5rem 0;
+  border-radius: 6px;
+  background: #181818;
+  border: 1px solid #232323;
+}
+
+.pagination button {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 1rem;
+  padding: 0.4em 0.9em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.pagination button:disabled {
+  color: #555;
+  cursor: not-allowed;
+  background: none;
+}
+
+.activePage {
+  background: #2563eb !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.form {
+  max-width: 500px;
+  margin: 2rem auto 0 auto;
+  background: #232323;
+  padding: 2rem 2rem 1.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.form label {
+  color: #e5e7eb;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.form input {
+  background: #181818;
+  color: #e5e7eb;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 0.6em 1em;
+  font-size: 1rem;
+  font-weight: 400;
+  outline: none;
+  transition: border 0.2s;
+}
+.form input:focus {
+  border-color: #2563eb;
+}
+.successMessage {
+  background: #16a34a;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  font-weight: 500;
+}
+
+.statusCell {
+  font-weight: 600;
+  border-left: 4px solid #d4a373;
+  padding-left: 0.75rem;
+}
+.status-new {
+  border-color: #d4a373;
+  color: #d4a373;
+}
+.status-in_progress {
+  border-color: #1e40af;
+  color: #3b82f6;
+}
+.status-ready_for_pickup {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.status-collected {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+.status-cancelled {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.addReportButton {
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 0.5rem;
+}
+.addReportButton:hover {
+  background: #22c55e;
+  color: #fff;
+} 

@@ -1,57 +1,18 @@
 'use client';
 
 import { createContext, useContext, useState } from 'react';
+import { exportReportsToCSV, importReportsFromCSV } from '../utils/csvUtils';
 
 const ReportsContext = createContext();
 
 export function ReportsProvider({ children }) {
   const [reports, setReports] = useState({
-    new: [
-      {
-        id: 1,
-        title: 'Zgłoszenie #1',
-        client: 'Jan Kowalski',
-        date: '2024-03-20',
-        description: 'Naprawa laptopa'
-      }
-    ],
-    inProgress: [
-      {
-        id: 2,
-        title: 'Zgłoszenie #2',
-        client: 'Anna Nowak',
-        date: '2024-03-19',
-        description: 'Instalacja systemu'
-      }
-    ],
-    readyForPickup: [
-      {
-        id: 3,
-        title: 'Zgłoszenie #3',
-        client: 'Piotr Wiśniewski',
-        date: '2024-03-18',
-        description: 'Wymiana dysku'
-      }
-    ],
-    completed: [
-      {
-        id: 4,
-        title: 'Zgłoszenie #4',
-        client: 'Maria Dąbrowska',
-        date: '2024-03-17',
-        description: 'Czyszczenie komputera'
-      }
-    ],
+    new: [],
+    inProgress: [],
+    readyForPickup: [],
+    completed: [],
     cancelled: [],
-    online_new: [
-      {
-        id: 5,
-        title: 'Zgłoszenie #5',
-        client: 'Tomasz Lewandowski',
-        date: '2024-03-20',
-        description: 'Naprawa drukarki'
-      }
-    ],
+    online_new: [],
     online_approved: [],
     online_in_transport: [],
     online_in_progress: [],
@@ -74,8 +35,28 @@ export function ReportsProvider({ children }) {
     });
   };
 
+  const handleExportToCSV = () => {
+    exportReportsToCSV(reports);
+  };
+
+  const handleImportFromCSV = async (file) => {
+    try {
+      const importedReports = await importReportsFromCSV(file);
+      setReports(importedReports);
+      return true;
+    } catch (error) {
+      console.error('Error importing CSV:', error);
+      return false;
+    }
+  };
+
   return (
-    <ReportsContext.Provider value={{ reports, moveReport }}>
+    <ReportsContext.Provider value={{ 
+      reports, 
+      moveReport, 
+      handleExportToCSV, 
+      handleImportFromCSV 
+    }}>
       {children}
     </ReportsContext.Provider>
   );

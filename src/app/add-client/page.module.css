@@ -1,0 +1,85 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #111111;
+  color: #e5e7eb;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.form {
+  max-width: 500px;
+  margin: 2rem auto 0 auto;
+  background: #232323;
+  padding: 2rem 2rem 1.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.form label {
+  color: #e5e7eb;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.form input {
+  background: #181818;
+  color: #e5e7eb;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 0.6em 1em;
+  font-size: 1rem;
+  font-weight: 400;
+  outline: none;
+  transition: border 0.2s;
+}
+.form input:focus {
+  border-color: #2563eb;
+}
+.successMessage {
+  background: #16a34a;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  font-weight: 500;
+}
+.detailsButton {
+  background: #fff;
+  color: #232323;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  padding: 0.4em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.detailsButton:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+.duplicatePrompt {
+  background: #f59e0b;
+  color: #232323;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.05rem;
+  margin-top: 1rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: center;
+} 

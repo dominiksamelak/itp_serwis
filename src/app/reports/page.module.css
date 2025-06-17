@@ -1,0 +1,510 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #111111;
+  color: #e5e7eb;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.csvControls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.csvButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.csvButton:hover {
+  background-color: #2563eb;
+}
+
+.errorMessage {
+  color: #ef4444;
+  font-size: 0.9rem;
+  margin-left: 1rem;
+}
+
+.reportsSection {
+  margin-bottom: 3rem;
+}
+
+.reportsSection h2 {
+  color: #e5e7eb;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.sectionsRow {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.reportsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.statusListItem {
+  background: #232323;
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.statusHeader {
+  color: #e5e7eb;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+.reportItemsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Remove old grid styles for .reportsGrid, .localReportsGrid, .onlineReportsGrid */
+.reportsGrid, .localReportsGrid, .onlineReportsGrid {
+  display: none !important;
+}
+
+.statusColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 200px;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.statusColumn h3 {
+  color: #e5e7eb;
+  font-size: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid;
+}
+
+/* Local reports colors */
+.newReports h3 {
+  border-color: #d4a373;
+}
+
+.inProgress h3 {
+  border-color: #1e40af;
+}
+
+.readyForPickup h3 {
+  border-color: #3b82f6;
+}
+
+.completed h3 {
+  border-color: #16a34a;
+}
+
+.cancelled h3 {
+  border-color: #ef4444;
+}
+
+/* Online reports colors */
+.approved h3 {
+  border-color: #14b8a6;
+}
+
+.inTransport h3 {
+  border-color: #f59e0b;
+}
+
+.readyToShip h3 {
+  border-color: #8b5cf6;
+}
+
+.shipped h3 {
+  border-color: #ec4899;
+}
+
+.delivered h3 {
+  border-color: #22c55e;
+}
+
+.rejected h3 {
+  border-color: #ef4444;
+}
+
+.statusColumn.dragOver {
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 2px dashed #3b82f6;
+}
+
+.cancelled.dragOver,
+.rejected.dragOver {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 2px dashed #ef4444;
+}
+
+.statusColumn.invalidDrop {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 2px dashed #ef4444;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.reportsTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #232323;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  table-layout: fixed;
+}
+
+.reportsTable th, .reportsTable td {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.reportsTable th {
+  background: #181818;
+  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.reportsTable tr {
+  background: #232323;
+  transition: background 0.2s;
+}
+
+.reportsTable tr:hover {
+  background: #282828;
+}
+
+.centered {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.deviceDesc {
+  color: #9ca3af;
+  font-size: 0.95rem;
+}
+
+/* Status row outlines */
+.new, .online_new {
+  border-left: 4px solid #d4a373;
+}
+.inProgress, .online_in_progress {
+  border-left: 4px solid #1e40af;
+}
+.readyForPickup {
+  border-left: 4px solid #3b82f6;
+}
+.completed, .online_delivered {
+  border-left: 4px solid #16a34a;
+}
+.cancelled, .online_rejected {
+  border-left: 4px solid #ef4444;
+}
+.online_approved {
+  border-left: 4px solid #14b8a6;
+}
+.online_in_transport {
+  border-left: 4px solid #f59e0b;
+}
+.online_ready_to_ship {
+  border-left: 4px solid #8b5cf6;
+}
+.online_shipped {
+  border-left: 4px solid #ec4899;
+}
+
+/* Remove background and color overrides for status rows */
+/* Remove forced color inheritance for table cells */
+
+.detailsButton {
+  background: #fff;
+  color: #232323;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  padding: 0.4em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.detailsButton:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+/* Remove old card/list styles */
+.reportsList, .statusListItem, .statusHeader, .reportItemsList, .sectionsRow {
+  all: unset;
+}
+
+.statusLabel {
+  display: inline-block;
+  padding: 0.3em 1em;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+}
+.newLabel, .online_newLabel {
+  background: #d4a373;
+  color: #232323;
+}
+.inProgressLabel, .online_in_progressLabel {
+  background: #1e40af;
+}
+.readyForPickupLabel {
+  background: #3b82f6;
+}
+.completedLabel, .online_deliveredLabel {
+  background: #16a34a;
+}
+.cancelledLabel, .online_rejectedLabel {
+  background: #ef4444;
+}
+.online_approvedLabel {
+  background: #14b8a6;
+}
+.online_in_transportLabel {
+  background: #f59e0b;
+  color: #232323;
+}
+.online_ready_to_shipLabel {
+  background: #8b5cf6;
+}
+
+.choiceButtons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 3rem 0 2rem 0;
+}
+.choiceButton {
+  background: #232323;
+  color: #e5e7eb;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1.2rem 2.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.choiceButton:hover {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.expandedSectionRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.expandedReportsSection {
+  width: 90%;
+  margin: 0 auto;
+  transition: width 0.3s;
+}
+
+.stickyOtherButtonTop {
+  position: sticky;
+  top: 64px;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  background: #232323;
+  color: #e5e7eb;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 1rem 0;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.stickyOtherButtonTop:hover {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.stickyOtherButtonBottom {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  background: #232323;
+  color: #e5e7eb;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.stickyOtherButtonBottom:hover {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 1.5rem 0 0 0;
+  padding: 0.5rem 0;
+  border-radius: 6px;
+  background: #181818;
+  border: 1px solid #232323;
+}
+.pagination button {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 1rem;
+  padding: 0.4em 0.9em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.pagination button:disabled {
+  color: #555;
+  cursor: not-allowed;
+  background: none;
+}
+.activePage {
+  background: #2563eb !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.tableHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.pageSizeSelectWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pageSizeLabel {
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+.pageSizeSelect {
+  background: #232323;
+  color: #e5e7eb;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 0.3em 1em;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  transition: border 0.2s;
+}
+.pageSizeSelect:focus {
+  border-color: #2563eb;
+}
+
+.withBottomButton {
+  margin-bottom: 70px !important;
+}
+.withTopButton {
+  margin-top: 70px !important;
+}
+
+.alignBottom {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.statusCell {
+  font-weight: 600;
+  border-left: 4px solid #d4a373;
+  padding-left: 0.75rem;
+}
+.status-new {
+  border-color: #d4a373;
+  color: #d4a373;
+}
+.status-in_progress {
+  border-color: #1e40af;
+  color: #3b82f6;
+}
+.status-ready_for_pickup {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.status-collected {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+.status-cancelled {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.reportsTable th:nth-child(4),
+.reportsTable td:nth-child(4) {
+  width: 240px;
+  min-width: 180px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} 

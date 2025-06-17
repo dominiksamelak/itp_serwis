@@ -119,4 +119,18 @@
   .menuButton.active span:nth-child(3) {
     transform: translateY(-9px) rotate(-45deg);
   }
+}
+
+.fixedNavbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: #181818;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.stickyNavbar {
+  display: none;
 } 

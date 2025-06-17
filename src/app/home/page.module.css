@@ -5,9 +5,88 @@
 }
 
 .content {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.heroSection {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.heroSection h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.heroSection p {
+  font-size: 1.2rem;
+  color: #9ca3af;
+}
+
+.featuresSection {
+  margin: 4rem 0;
+}
+
+.featuresSection h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.featureCard {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+}
+
+.featureCard h3 {
+  color: #3b82f6;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.featureCard p {
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+.contactSection {
+  margin: 4rem 0;
+  text-align: center;
+}
+
+.contactSection h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+.contactInfo {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.contactInfo p {
+  color: #9ca3af;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
 }
 
 .reportsSection {
@@ -229,4 +308,32 @@
   .content {
     padding: 1rem;
   }
+}
+
+.csvControls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.csvButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.csvButton:hover {
+  background-color: #2563eb;
+}
+
+.errorMessage {
+  color: #ef4444;
+  font-size: 0.9rem;
+  margin-left: 1rem;
 } 

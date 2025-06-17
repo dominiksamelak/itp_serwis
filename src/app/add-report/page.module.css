@@ -1,0 +1,89 @@
+.input {
+  background: #181818;
+  color: #e5e7eb;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 0.6em 1em;
+  font-size: 1rem;
+  font-weight: 400;
+  outline: none;
+  transition: border 0.2s;
+  margin-bottom: 1rem;
+}
+.input:focus {
+  border-color: #2563eb;
+}
+.searchResults {
+  background: #232323;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+.clientResult {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #333;
+}
+.clientResult:last-child {
+  border-bottom: none;
+}
+.notFoundBox {
+  background: #f59e0b;
+  color: #232323;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.05rem;
+  margin-top: 1.5rem;
+  font-weight: 500;
+}
+.selectedClientBox {
+  background: #232323;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.form {
+  max-width: 500px;
+  margin: 2rem auto 0 auto;
+  background: #232323;
+  padding: 2rem 2rem 1.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.detailsButton {
+  background: #fff;
+  color: #232323;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  padding: 0.4em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 0.5rem;
+}
+.detailsButton:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+.dynamicResults {
+  background: #232323;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 0.5rem 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.searching {
+  color: #3b82f6;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  text-align: center;
+} 
