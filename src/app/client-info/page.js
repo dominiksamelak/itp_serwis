@@ -1,12 +1,12 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { supabase } from "../utils/supabaseClients";
 import Navbar from "../components/Navbar";
 import styles from "../clients/page.module.css";
 
-export default function ClientInfoPage() {
+function ClientInfoContent() {
   const searchParams = useSearchParams();
   const clientId = searchParams.get("clientId");
   const [client, setClient] = useState(null);
@@ -93,5 +93,13 @@ export default function ClientInfoPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ClientInfoPage() {
+  return (
+    <Suspense fallback={<div>Ładowanie...</div>}>
+      <ClientInfoContent />
+    </Suspense>
   );
 } 
