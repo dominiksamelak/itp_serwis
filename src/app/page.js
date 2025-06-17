@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Navbar from "./components/Navbar";
-import { supabase } from '../utils/supabaseClients';
+import { supabase } from './utils/supabaseClients';
 
 const STATUSES = {
   new: "Nowe zgłoszenie",
