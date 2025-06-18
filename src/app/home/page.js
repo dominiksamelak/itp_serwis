@@ -3,14 +3,17 @@
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import Navbar from "../components/Navbar";
-import { supabase } from '../utils/supabaseClients';
 
 const STATUSES = [
-  { key: 'new', label: 'Nowe zgłoszenia', className: 'newReports' },
-  { key: 'in_progress', label: 'W trakcie realizacji', className: 'inProgress' },
-  { key: 'ready_for_pickup', label: 'Gotowe do odbioru', className: 'readyForPickup' },
-  { key: 'collected', label: 'Odebrane', className: 'completed' },
-  { key: 'cancelled', label: 'Zgłoszenia odrzucone', className: 'cancelled' }
+  { key: "new", label: "Nowe zgłoszenia", className: "newReports" },
+  { key: "inProgress", label: "W trakcie realizacji", className: "inProgress" },
+  {
+    key: "readyForPickup",
+    label: "Gotowe do odbioru",
+    className: "readyForPickup",
+  },
+  { key: "collected", label: "Odebrane", className: "completed" },
+  { key: "cancelled", label: "Zgłoszenia odrzucone", className: "cancelled" },
 ];
 
 export default function HomePage() {
@@ -24,12 +27,13 @@ export default function HomePage() {
 
   const fetchRepairs = async () => {
     try {
-      const { data, error } = await supabase
-        .from('equipment_repairs')
-        .select(`*, clients ( name, phone, email )`)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      setRepairs(data);
+      const res = await fetch("/api/repairs");
+      const data = await res.json();
+      if (res.ok) {
+        setRepairs(data);
+      } else {
+        throw new Error(data.error || "Failed to fetch repairs");
+      }
     } catch (error) {
       setErrorMsg(error.message);
     } finally {
@@ -38,8 +42,8 @@ export default function HomePage() {
   };
 
   const handleDragStart = (e, repairId, status) => {
-    e.dataTransfer.setData('repairId', repairId);
-    e.dataTransfer.setData('fromStatus', status);
+    e.dataTransfer.setData("repairId", repairId);
+    e.dataTransfer.setData("fromStatus", status);
   };
 
   const handleDragOver = (e) => {
@@ -48,31 +52,22 @@ export default function HomePage() {
 
   const handleDrop = async (e, newStatus) => {
     e.preventDefault();
-    const repairId = Number(e.dataTransfer.getData('repairId'));
-    console.log('repairId:', repairId, typeof repairId);
+    const repairId = Number(e.dataTransfer.getData("repairId"));
     try {
-      const { data, error } = await supabase
-        .from('equipment_repairs')
-        .update({ status: newStatus })
-        .eq('id', repairId)
-        .select();
-
-      if (error) {
-        console.error('Supabase update error:', error);
-        setErrorMsg(error.message);
-        return;
-      }
-      if (!data || data.length === 0) {
-        console.error('No data returned from update');
-        setErrorMsg('No data returned from update');
-        return;
-      }
-      setRepairs(repairs.map(repair =>
-        repair.id === repairId ? { ...repair, status: newStatus } : repair
-      ));
+      const res = await fetch("/api/repairs/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: repairId, status: newStatus }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to update status");
+      setRepairs(
+        repairs.map((repair) =>
+          repair.id === repairId ? { ...repair, status: newStatus } : repair
+        )
+      );
     } catch (error) {
       setErrorMsg(error.message);
-      console.error('Update exception:', error);
     }
   };
 
@@ -86,7 +81,10 @@ export default function HomePage() {
       </div>
     );
   }
-
+  console.log(
+    "All statuses:",
+    repairs.map((r) => r.status)
+  );
   return (
     <div className={styles.pageContainer}>
       <Navbar />
@@ -102,29 +100,31 @@ export default function HomePage() {
                 onDrop={(e) => handleDrop(e, key)}
               >
                 <h3>{label}</h3>
-                {repairs.filter(repair => repair.status === key).map(repair => (
-                  <div
-                    key={repair.id}
-                    className={styles.reportCard}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, repair.id, key)}
-                  >
-                    <div className={styles.reportTitle}>
-                      <span style={{ color: '#3b82f6', fontWeight: 600 }}>
-                        {repair.order_number || `#${repair.id}`}
-                      </span>
+                {repairs
+                  .filter((repair) => repair.status === key)
+                  .map((repair) => (
+                    <div
+                      key={repair.id}
+                      className={styles.reportCard}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, repair.id, key)}
+                    >
+                      <div className={styles.reportTitle}>
+                        <span style={{ color: "#3b82f6", fontWeight: 600 }}>
+                          {repair.order_number || `#${repair.id}`}
+                        </span>
+                      </div>
+                      <div style={{ color: "#9ca3af", marginBottom: 4 }}>
+                        Klient: {repair.clients?.name || "-"}
+                      </div>
+                      <div style={{ color: "#9ca3af", marginBottom: 4 }}>
+                        Data: {new Date(repair.created_at).toLocaleDateString()}
+                      </div>
+                      <div style={{ color: "#9ca3af" }}>
+                        Sprzęt: {repair.manufacturer} {repair.model}
+                      </div>
                     </div>
-                    <div style={{ color: '#9ca3af', marginBottom: 4 }}>
-                      Klient: {repair.clients?.name || '-'}
-                    </div>
-                    <div style={{ color: '#9ca3af', marginBottom: 4 }}>
-                      Data: {new Date(repair.created_at).toLocaleDateString()}
-                    </div>
-                    <div style={{ color: '#9ca3af' }}>
-                      Sprzęt: {repair.manufacturer} {repair.model}
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             ))}
           </div>
@@ -132,4 +132,4 @@ export default function HomePage() {
       </div>
     </div>
   );
-} 
+}
