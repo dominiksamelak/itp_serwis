@@ -20,6 +20,8 @@ export default function HomePage() {
   const [repairs, setRepairs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
+  const [dragOverColumn, setDragOverColumn] = useState(null);
+  const [dragSourceColumn, setDragSourceColumn] = useState(null);
 
   useEffect(() => {
     fetchRepairs();
@@ -44,14 +46,29 @@ export default function HomePage() {
   const handleDragStart = (e, repairId, status) => {
     e.dataTransfer.setData("repairId", repairId);
     e.dataTransfer.setData("fromStatus", status);
+    setDragSourceColumn(status);
   };
 
-  const handleDragOver = (e) => {
+  const handleDragEnd = () => {
+    setDragSourceColumn(null);
+  };
+
+  const handleDragOver = (e, columnKey) => {
     e.preventDefault();
+    setDragOverColumn(columnKey);
+  };
+
+  const handleDragLeave = (e, columnKey) => {
+    e.preventDefault();
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setDragOverColumn(null);
+    }
   };
 
   const handleDrop = async (e, newStatus) => {
     e.preventDefault();
+    setDragOverColumn(null);
+    setDragSourceColumn(null);
     const repairId = Number(e.dataTransfer.getData("repairId"));
     try {
       const res = await fetch("/api/repairs/update", {
@@ -95,36 +112,45 @@ export default function HomePage() {
             {STATUSES.map(({ key, label, className }) => (
               <div
                 key={key}
-                className={`${styles.statusColumn} ${styles[className]}`}
-                onDragOver={handleDragOver}
+                className={[
+                  styles.statusColumn,
+                  styles[className],
+                  dragOverColumn === key ? styles.dragOver : "",
+                  dragSourceColumn && dragSourceColumn !== key ? styles.highlightDropTarget : ""
+                ].join(" ")}
+                onDragOver={(e) => handleDragOver(e, key)}
+                onDragLeave={(e) => handleDragLeave(e, key)}
                 onDrop={(e) => handleDrop(e, key)}
               >
                 <h3>{label}</h3>
-                {repairs
-                  .filter((repair) => repair.status === key)
-                  .map((repair) => (
-                    <div
-                      key={repair.id}
-                      className={styles.reportCard}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, repair.id, key)}
-                    >
-                      <div className={styles.reportTitle}>
-                        <span style={{ color: "#3b82f6", fontWeight: 600 }}>
-                          {repair.order_number || `#${repair.id}`}
-                        </span>
+                <div className={styles.cardsContainer}>
+                  {repairs
+                    .filter((repair) => repair.status === key)
+                    .map((repair) => (
+                      <div
+                        key={repair.id}
+                        className={styles.reportCard}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, repair.id, key)}
+                        onDragEnd={handleDragEnd}
+                      >
+                        <div className={styles.reportTitle}>
+                          <span style={{ color: "#3b82f6", fontWeight: 600 }}>
+                            {repair.order_number || `#${repair.id}`}
+                          </span>
+                        </div>
+                        <div style={{ color: "#9ca3af", marginBottom: 4 }}>
+                          Klient: {repair.clients?.name || "-"}
+                        </div>
+                        <div style={{ color: "#9ca3af", marginBottom: 4 }}>
+                          Data: {new Date(repair.created_at).toLocaleDateString()}
+                        </div>
+                        <div style={{ color: "#9ca3af" }}>
+                          Sprzęt: {repair.manufacturer} {repair.model}
+                        </div>
                       </div>
-                      <div style={{ color: "#9ca3af", marginBottom: 4 }}>
-                        Klient: {repair.clients?.name || "-"}
-                      </div>
-                      <div style={{ color: "#9ca3af", marginBottom: 4 }}>
-                        Data: {new Date(repair.created_at).toLocaleDateString()}
-                      </div>
-                      <div style={{ color: "#9ca3af" }}>
-                        Sprzęt: {repair.manufacturer} {repair.model}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
             ))}
           </div>
