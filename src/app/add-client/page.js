@@ -13,7 +13,7 @@ export default function AddClientPage() {
     phone: "",
     email: "",
     street: "",
-    city: "",
+    city: "Poznań",
     zipcode: ""
   });
   const [submitted, setSubmitted] = useState(false);
@@ -22,7 +22,13 @@ export default function AddClientPage() {
   const [existingClient, setExistingClient] = useState(null);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "phone") {
+      const sanitizedValue = value.replace(/[^0-9]/g, '');
+      setForm({ ...form, [name]: sanitizedValue });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   useEffect(() => {
@@ -82,7 +88,7 @@ export default function AddClientPage() {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="phone">Numer telefonu</label>
-              <input type="text" id="phone" name="phone" value={form.phone} onChange={handleChange} required />
+              <input type="tel" id="phone" name="phone" value={form.phone} onChange={handleChange} required />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="email">Adres e-mail</label>

@@ -1,28 +1,29 @@
-export const runtime = "edge";
-
+import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
-export async function GET() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const res = await fetch(
-    `${supabaseUrl}/rest/v1/equipment_repairs?select=*,clients(name,phone,email)&order=created_at.desc`,
-    {
-      headers: {
-        apikey: supabaseAnonKey,
-        Authorization: `Bearer ${supabaseAnonKey}`,
-      },
-    }
-  );
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const searchQuery = searchParams.get("search");
 
-  if (!res.ok) {
-    return NextResponse.json(
-      { error: "Failed to fetch from Supabase" },
-      { status: res.status }
-    );
+  let query = supabase
+    .from("equipment_repairs")
+    .select("*, clients(id, name, phone)")
+    .order("created_at", { ascending: false });
+
+  if (searchQuery) {
+    query = query.ilike("clients.name", `%${searchQuery}%`);
   }
 
-  const data = await res.json();
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching repairs:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
   return NextResponse.json(data);
 }

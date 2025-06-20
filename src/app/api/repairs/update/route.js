@@ -5,10 +5,31 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const { id, status } = await request.json();
+  const { id, status, repair_summary, repair_cost } = await request.json();
+
+  const updateData = {};
+  if (status) {
+    updateData.status = status;
+    if (status === "collected") {
+      updateData.collected_at = new Date().toISOString();
+      updateData.cancelled_at = null;
+    } else if (status === "cancelled") {
+      updateData.cancelled_at = new Date().toISOString();
+      updateData.collected_at = null;
+    } else {
+      updateData.collected_at = null;
+      updateData.cancelled_at = null;
+    }
+  }
+  if (repair_summary !== undefined) {
+    updateData.repair_summary = repair_summary;
+  }
+  if (repair_cost !== undefined) {
+    updateData.repair_cost = repair_cost;
+  }
 
   const res = await fetch(
-    `${supabaseUrl}/rest/v1/equipment_repairs?id=eq.${id}`,
+    `${supabaseUrl}/rest/v1/equipment_repairs?id=eq.${id}&select=*,clients(*)`,
     {
       method: "PATCH",
       headers: {
@@ -17,7 +38,7 @@ export async function POST(request) {
         "Content-Type": "application/json",
         Prefer: "return=representation",
       },
-      body: JSON.stringify({ status }),
+      body: JSON.stringify(updateData),
     }
   );
 

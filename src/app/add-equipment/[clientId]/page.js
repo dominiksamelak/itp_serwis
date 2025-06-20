@@ -27,7 +27,10 @@ export default function AddEquipmentPage({ params }) {
     model: "",
     serial_number: "",
     issue_description: "",
-    password: ""
+    password: "",
+    assigned_to: "",
+    power_adapter_included: false,
+    data_backup_requested: false,
   });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -50,7 +53,11 @@ export default function AddEquipmentPage({ params }) {
   }, [clientId]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -87,7 +94,7 @@ export default function AddEquipmentPage({ params }) {
       const orderNumber = `L${String(nextNumber).padStart(2, '0')}/${month}/${year}`;
 
       // Insert the equipment repair with status 'new' and order_number
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('equipment_repairs')
         .insert([{
           client_id: clientId,
@@ -98,12 +105,21 @@ export default function AddEquipmentPage({ params }) {
           password: form.password,
           issue_description: form.issue_description,
           status: 'new',
-          order_number: orderNumber
-        }]);
+          order_number: orderNumber,
+          assigned_to: form.assigned_to,
+          power_adapter_included: form.power_adapter_included,
+          data_backup_requested: form.data_backup_requested,
+        }])
+        .select()
+        .single();
 
       if (error) throw error;
 
-      router.push('/clients');
+      if (data) {
+        router.push(`/reports/${data.id}`);
+      } else {
+        router.push('/clients');
+      }
     } catch (error) {
       setErrorMsg(error.message || 'Błąd podczas dodawania sprzętu!');
     } finally {
@@ -209,9 +225,53 @@ export default function AddEquipmentPage({ params }) {
               className={styles.textarea}
             />
           </div>
+          <div className={styles.checkboxContainer}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="power_adapter_included"
+                checked={form.power_adapter_included}
+                onChange={handleChange}
+                className={styles.checkboxInput}
+              />
+              Zasilacz w zestawie
+            </label>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="data_backup_requested"
+                checked={form.data_backup_requested}
+                onChange={handleChange}
+                className={styles.checkboxInput}
+              />
+              Kopia danych
+            </label>
+          </div>
+          <div className={styles.formGroup}>
+            <label>Przyjmował</label>
+            <div className={styles.radioGroup}>
+              {["Mariusz", "Krzysztof", "Dominik"].map((name) => (
+                <label key={name} className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    name="assigned_to"
+                    value={name}
+                    checked={form.assigned_to === name}
+                    onChange={handleChange}
+                    className={styles.radioInput}
+                  />
+                  {name}
+                </label>
+              ))}
+            </div>
+          </div>
           {errorMsg && <div className={styles.errorMessage}>{errorMsg}</div>}
-          <button type="submit" className={styles.detailsButton} disabled={submitting}>
-            {submitting ? 'Zapisywanie...' : 'Zapisz sprzęt'}
+          <button
+            type="submit"
+            className={styles.detailsButton}
+            disabled={submitting || !form.assigned_to}
+          >
+            {submitting ? "Zapisywanie..." : "Zapisz sprzęt"}
           </button>
         </form>
       </div>

@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
+import Link from "next/link";
 import { supabase } from "../utils/supabaseClients";
 import Navbar from "../components/Navbar";
 import styles from "../clients/page.module.css";
@@ -12,6 +13,14 @@ function ClientInfoContent() {
   const [client, setClient] = useState(null);
   const [repairs, setRepairs] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const statusLabels = {
+    new: "Nowe zgłoszenia",
+    inProgress: "W trakcie realizacji",
+    readyForPickup: "Gotowe do odbioru",
+    collected: "Odebrane",
+    cancelled: "Anulowane",
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -72,13 +81,20 @@ function ClientInfoContent() {
                 <th>Hasło</th>
                 <th>Opis usterki</th>
                 <th>Data zgłoszenia</th>
+                <th>Data zakończenia</th>
               </tr>
             </thead>
             <tbody>
               {repairs.map(repair => (
                 <tr key={repair.id}>
-                  <td>{repair.order_number || '-'}</td>
-                  <td>{repair.status}</td>
+                  <td>
+                    <Link href={`/reports/${repair.id}`} className={styles.nameCell}>
+                      {repair.order_number || '-'}
+                    </Link>
+                  </td>
+                  <td className={`${styles.statusCell} ${styles[`status-${repair.status.replace(/([A-Z])/g, '_$1').toLowerCase()}`]}`}>
+                    {statusLabels[repair.status] || repair.status}
+                  </td>
                   <td>{repair.equipment_type}</td>
                   <td>{repair.manufacturer}</td>
                   <td>{repair.model}</td>
@@ -86,6 +102,7 @@ function ClientInfoContent() {
                   <td>{repair.password || '-'}</td>
                   <td>{repair.issue_description}</td>
                   <td>{new Date(repair.created_at).toLocaleDateString()}</td>
+                  <td>{repair.collected_at ? new Date(repair.collected_at).toLocaleDateString() : '-'}</td>
                 </tr>
               ))}
             </tbody>

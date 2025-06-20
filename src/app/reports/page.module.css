@@ -499,6 +499,16 @@
   color: #ef4444;
 }
 
+.clientLink {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: text-decoration 0.2s ease-in-out;
+}
+
+.clientLink:hover {
+  text-decoration: underline;
+}
+
 .reportsTable th:nth-child(4),
 .reportsTable td:nth-child(4) {
   width: 240px;

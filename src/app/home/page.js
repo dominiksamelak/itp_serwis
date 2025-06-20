@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import styles from "./page.module.css";
 import Navbar from "../components/Navbar";
 
@@ -13,35 +14,78 @@ const STATUSES = [
     className: "readyForPickup",
   },
   { key: "collected", label: "Odebrane", className: "completed" },
-  { key: "cancelled", label: "Zgłoszenia odrzucone", className: "cancelled" },
+  { key: "cancelled", label: "Anulowane", className: "cancelled" },
 ];
+
+const Column = ({ title, repairs, status, className }) => (
+  <div className={`${styles.statusColumn} ${styles[className]}`}>
+    <h3>{title}</h3>
+    <div className={styles.cardsContainer}>
+      {repairs.map((repair) => (
+        <Card key={repair.id} repair={repair} status={status} />
+      ))}
+    </div>
+  </div>
+);
+
+const Card = ({ repair, status }) => {
+  const handleDragStart = (e) => {
+    e.dataTransfer.setData("repairId", repair.id);
+    e.dataTransfer.setData("fromStatus", status);
+  };
+
+  const handleDragEnd = () => {
+    // Handle drag end if needed
+  };
+
+  return (
+    <div
+      className={`${styles.reportCard} ${styles.dragging}`}
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <Link href={`/reports/${repair.id}`} passHref>
+        <h4>{repair.order_number || `#${repair.id}`}</h4>
+      </Link>
+      <p>Klient: {repair.clients?.name || "-"}</p>
+      <p>
+        Data:{" "}
+        {repair.status === "collected" || repair.status === "cancelled"
+          ? new Date(
+              repair.collected_at || repair.cancelled_at
+            ).toLocaleDateString()
+          : new Date(repair.created_at).toLocaleDateString()}
+      </p>
+      <p>{repair.clients?.name || '-'}</p>
+    </div>
+  );
+};
 
 export default function HomePage() {
   const [repairs, setRepairs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [error, setError] = useState(null);
   const [dragOverColumn, setDragOverColumn] = useState(null);
   const [dragSourceColumn, setDragSourceColumn] = useState(null);
 
   useEffect(() => {
+    const fetchRepairs = async () => {
+      try {
+        const response = await fetch("/api/repairs");
+        if (!response.ok) {
+          throw new Error("Failed to fetch repairs");
+        }
+        const data = await response.json();
+        setRepairs(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchRepairs();
   }, []);
-
-  const fetchRepairs = async () => {
-    try {
-      const res = await fetch("/api/repairs");
-      const data = await res.json();
-      if (res.ok) {
-        setRepairs(data);
-      } else {
-        throw new Error(data.error || "Failed to fetch repairs");
-      }
-    } catch (error) {
-      setErrorMsg(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDragStart = (e, repairId, status) => {
     e.dataTransfer.setData("repairId", repairId);
@@ -70,6 +114,7 @@ export default function HomePage() {
     setDragOverColumn(null);
     setDragSourceColumn(null);
     const repairId = Number(e.dataTransfer.getData("repairId"));
+    
     try {
       const res = await fetch("/api/repairs/update", {
         method: "POST",
@@ -84,24 +129,16 @@ export default function HomePage() {
         )
       );
     } catch (error) {
-      setErrorMsg(error.message);
+      console.error("Error updating status:", error);
     }
   };
 
-  if (loading) {
-    return (
-      <div className={styles.pageContainer}>
-        <Navbar />
-        <div className={styles.content}>
-          <div>Ładowanie...</div>
-        </div>
-      </div>
-    );
-  }
-  console.log(
-    "All statuses:",
-    repairs.map((r) => r.status)
-  );
+  if (loading) return <div className={styles.pageContainer}><Navbar /><div className={styles.content}>Ładowanie...</div></div>;
+  if (error) return <div className={styles.pageContainer}><Navbar /><div className={styles.content}>Błąd: {error}</div></div>;
+
+  const getColumnRepairs = (status) =>
+    repairs.filter((repair) => repair.status === status);
+
   return (
     <div className={styles.pageContainer}>
       <Navbar />
@@ -124,30 +161,29 @@ export default function HomePage() {
               >
                 <h3>{label}</h3>
                 <div className={styles.cardsContainer}>
-                  {repairs
-                    .filter((repair) => repair.status === key)
-                    .map((repair) => (
-                      <div
-                        key={repair.id}
-                        className={styles.reportCard}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, repair.id, key)}
-                        onDragEnd={handleDragEnd}
-                      >
-                        <h4>
-                          {repair.order_number || `#${repair.id}`}
-                        </h4>
-                        <p>
-                          Klient: {repair.clients?.name || "-"}
-                        </p>
-                        <p>
-                          Data: {new Date(repair.created_at).toLocaleDateString()}
-                        </p>
-                        <p>
-                          {repair.clients?.name || '-'}
-                        </p>
-                      </div>
-                    ))}
+                  {getColumnRepairs(key).map((repair) => (
+                    <div
+                      key={repair.id}
+                      className={styles.reportCard}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, repair.id, key)}
+                      onDragEnd={handleDragEnd}
+                    >
+                      <Link href={`/reports/${repair.id}`} passHref>
+                        <h4>{repair.order_number || `#${repair.id}`}</h4>
+                      </Link>
+                      <p>Klient: {repair.clients?.name || "-"}</p>
+                      <p>
+                        Data:{" "}
+                        {repair.status === "collected" || repair.status === "cancelled"
+                          ? new Date(
+                              repair.collected_at || repair.cancelled_at
+                            ).toLocaleDateString()
+                          : new Date(repair.created_at).toLocaleDateString()}
+                      </p>
+                      <p>{repair.clients?.name || '-'}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}

@@ -1,0 +1,190 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #111111;
+  color: #e5e7eb;
+  padding: 2rem;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detailsCard {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detailsCard h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #3b82f6;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.gridColSpan2 {
+  grid-column: span 2 / span 2;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.value {
+  font-size: 1.1rem;
+  color: #e5e7eb;
+  margin: 0;
+}
+
+.statusSelect {
+  background-color: #2d2d2d;
+  color: #e5e7eb;
+  border: 2px solid #555;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.statusSelect:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.status-border-new {
+  border-color: #d4a373;
+}
+.status-border-in_progress {
+  border-color: #1e40af;
+}
+.status-border-ready_for_pickup {
+  border-color: #3b82f6;
+}
+.status-border-collected {
+  border-color: #16a34a;
+}
+.status-border-cancelled {
+  border-color: #ef4444;
+}
+
+.clientLink .value {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: text-decoration 0.2s ease-in-out;
+}
+
+.clientLink:hover .value {
+  text-decoration: underline;
+}
+
+.error {
+  color: #ef4444;
+}
+
+.summarySection {
+  margin-top: 2rem;
+  border-top: 1px solid #333;
+  padding-top: 2rem;
+}
+
+.summarySection h2 {
+  font-size: 1.5rem;
+  color: #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.textarea,
+.input {
+  background-color: #2d2d2d;
+  color: #e5e7eb;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s ease-in-out;
+  resize: none;
+}
+
+.textarea:read-only,
+.input:read-only {
+  background-color: #222;
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-color: #444;
+}
+
+.costInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.costInputWrapper .input {
+  padding-right: 2.5rem;
+}
+
+.currencySymbol {
+  position: absolute;
+  right: 1rem;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.textarea:focus,
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.saveButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: auto;
+  float: right;
+}
+
+.saveButton:hover {
+  background-color: #2563eb;
+}
+
+.saveButtonContainer {
+  justify-content: flex-end;
+  align-items: center;
+}
