@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import styles from "./report-details.module.css";
+import { supabase } from "../../utils/supabaseClients";
 
 export default function ReportDetailsPage() {
   const { reportId } = useParams();
@@ -84,16 +85,20 @@ export default function ReportDetailsPage() {
     if (reportId) {
       const fetchRepairDetails = async () => {
         try {
-          const res = await fetch(`/api/repairs?id=${reportId}`);
-          if (!res.ok) {
-            throw new Error("Failed to fetch repair details");
+          const { data, error } = await supabase
+            .from('equipment_repairs')
+            .select('*, clients(*)')
+            .eq('id', reportId)
+            .single();
+
+          if (error) {
+            throw error;
           }
-          const data = await res.json();
-          const fetchedRepair = data[0];
-          setRepair(fetchedRepair);
-          setSummary(fetchedRepair.repair_summary || "");
-          setCost(fetchedRepair.repair_cost || "");
-          updateEditMode(fetchedRepair);
+
+          setRepair(data);
+          setSummary(data.repair_summary || "");
+          setCost(data.repair_cost || "");
+          updateEditMode(data);
         } catch (err) {
           setError(err.message);
         } finally {
