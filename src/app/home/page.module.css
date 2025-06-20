@@ -15,7 +15,6 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  height: 100%;
 }
 
 .heroSection {
@@ -99,6 +98,11 @@
 
 .reportsSection {
   margin-bottom: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
 }
 
 .reportsSection h2 {
@@ -113,7 +117,6 @@
   align-items: flex-start;
   flex: 1 1 0;
   min-height: 0;
-  height: 100%;
 }
 
 /* Local reports grid */
@@ -273,6 +276,12 @@
   border: 1px solid #404040;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: move;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: #4f4f4f rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.3rem;
 }
 
 /* Local reports card backgrounds */
@@ -350,7 +359,7 @@
 .reportCard p {
   color: #9ca3af;
   margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 1400px) {
@@ -419,4 +428,24 @@
   min-height: 0;
   overflow-y: auto;
   padding: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: #4f4f4f rgba(0, 0, 0, 0.1);
+}
+
+.cardsContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cardsContainer::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.cardsContainer::-webkit-scrollbar-thumb {
+  background: #4f4f4f;
+  border-radius: 10px;
+}
+
+.cardsContainer::-webkit-scrollbar-thumb:hover {
+  background: #6f6f6f;
 } 

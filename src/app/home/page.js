@@ -134,20 +134,18 @@ export default function HomePage() {
                         onDragStart={(e) => handleDragStart(e, repair.id, key)}
                         onDragEnd={handleDragEnd}
                       >
-                        <div className={styles.reportTitle}>
-                          <span style={{ color: "#3b82f6", fontWeight: 600 }}>
-                            {repair.order_number || `#${repair.id}`}
-                          </span>
-                        </div>
-                        <div style={{ color: "#9ca3af", marginBottom: 4 }}>
+                        <h4>
+                          {repair.order_number || `#${repair.id}`}
+                        </h4>
+                        <p>
                           Klient: {repair.clients?.name || "-"}
-                        </div>
-                        <div style={{ color: "#9ca3af", marginBottom: 4 }}>
+                        </p>
+                        <p>
                           Data: {new Date(repair.created_at).toLocaleDateString()}
-                        </div>
-                        <div style={{ color: "#9ca3af" }}>
-                          Sprzęt: {repair.manufacturer} {repair.model}
-                        </div>
+                        </p>
+                        <p>
+                          {repair.clients?.name || '-'}
+                        </p>
                       </div>
                     ))}
                 </div>
