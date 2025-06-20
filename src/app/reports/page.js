@@ -6,7 +6,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import Navbar from "../components/Navbar";
 import { supabase } from "../utils/supabaseClients";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 function ReportsPageContent() {
   const [reports, setReports] = useState([]);
@@ -16,63 +16,75 @@ function ReportsPageContent() {
   const [pageSize, setPageSize] = useState(10);
   const [expandedRow, setExpandedRow] = useState(null);
   const detailsRef = useRef(null);
+  
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const params = new URLSearchParams(searchParams);
+      if (statusFilter && statusFilter !== 'all') {
+        params.set('status', statusFilter);
+      } else {
+        params.delete('status');
+      }
+      // Using on-page filters clears the global search param 'q'
+      params.delete('q');
+      
+      router.push(`${pathname}?${params.toString()}`);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [statusFilter, pathname, router]);
 
   useEffect(() => {
     const getReports = async () => {
       setLoading(true);
       setError(null);
-      const query = searchParams.get("q");
+      
+      const queryParam = searchParams.get("q");
+      const statusParam = searchParams.get("status");
 
-      if (!query) {
-        const { data, error } = await supabase
-          .from("equipment_repairs")
-          .select("*, clients(*)")
-          .order("created_at", { ascending: false });
-
-        if (error) setError(error.message);
-        else setReports(data);
-        setLoading(false);
-        return;
-      }
-
-      // 1. Find matching client IDs
-      const { data: clientIds, error: clientError } = await supabase
-        .from('clients')
-        .select('id')
-        .ilike('name', `%${query}%`);
-
-      if (clientError) {
-        setError(clientError.message);
-        setLoading(false);
-        return;
-      }
-      const matchingClientIds = clientIds.map(c => c.id);
-
-      // 2. Build the main query
       let queryBuilder = supabase
         .from("equipment_repairs")
         .select("*, clients(*)")
         .order("created_at", { ascending: false });
 
-      const orFilters = [
-        `order_number.ilike.%${query}%`,
-        `manufacturer.ilike.%${query}%`,
-        `model.ilike.%${query}%`
-      ];
+      if (statusParam && statusParam !== 'all') {
+        queryBuilder = queryBuilder.eq('status', statusParam);
+      } else if (queryParam) {
+        // Fallback to global search logic
+        const { data: clientIds } = await supabase
+          .from('clients')
+          .select('id')
+          .ilike('name', `%${queryParam}%`);
+        
+        const matchingClientIds = clientIds ? clientIds.map(c => c.id) : [];
 
-      if (matchingClientIds.length > 0) {
-        orFilters.push(`client_id.in.(${matchingClientIds.join(',')})`);
+        const orFilters = [
+          `order_number.ilike.%${queryParam}%`,
+          `manufacturer.ilike.%${queryParam}%`,
+          `model.ilike.%${queryParam}%`
+        ];
+
+        if (matchingClientIds.length > 0) {
+          orFilters.push(`client_id.in.(${matchingClientIds.join(',')})`);
+        }
+        
+        queryBuilder = queryBuilder.or(orFilters.join(','));
       }
-      
-      queryBuilder = queryBuilder.or(orFilters.join(','));
       
       const { data, error } = await queryBuilder;
 
       if (error) {
         setError(error.message);
       } else {
-        setReports(data);
+        setReports(data || []);
       }
       setLoading(false);
     };
@@ -134,8 +146,24 @@ function ReportsPageContent() {
     <div className={styles.pageContainer}>
       <Navbar />
       <div className={styles.content}>
-        <div className={styles.tableHeaderRow}>
+        <div className={styles.headerContainer}>
           <h2>Zgłoszenia</h2>
+          <div className={styles.filtersContainer}>
+            <div className={styles.filterGroup}>
+              <label htmlFor="statusFilter">Status:</label>
+              <select
+                id="statusFilter"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className={styles.filterSelect}
+              >
+                <option value="all">Wszystkie</option>
+                {Object.entries(statusLabels).map(([key, label]) => (
+                  <option key={key} value={key}>{label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
           <div className={styles.pageSizeSelectWrapper}>
             <label htmlFor="pageSize" className={styles.pageSizeLabel}>
               Na stronę:
@@ -161,6 +189,7 @@ function ReportsPageContent() {
                   <th className={styles.centered}>Klient</th>
                   <th className={styles.centered}>Sprzęt</th>
                   <th className={styles.centered}>Status</th>
+                  <th className={styles.centered}>Przyjął</th>
                   <th className={styles.centered}></th>
                 </tr>
               </thead>
@@ -198,6 +227,7 @@ function ReportsPageContent() {
                         >
                           {statusLabels[repair.status] || repair.status}
                         </td>
+                        <td className={styles.centered}>{repair.assigned_to || "-"}</td>
                         <td className={styles.centered}>
                           <button
                             className={styles.detailsButton}
@@ -213,7 +243,7 @@ function ReportsPageContent() {
                       </tr>
                       {expandedRow === repair.id && (
                         <tr ref={detailsRef}>
-                          <td colSpan="5">
+                          <td colSpan="6">
                             <div>
                               <strong>Numer zgłoszenia:</strong>{" "}
                               {repair.order_number || "-"}
@@ -259,6 +289,8 @@ function ReportsPageContent() {
                               <br />
                               <strong>Opis usterki:</strong>{" "}
                               {repair.issue_description}
+                              <br />
+                              <strong>Przyjął:</strong> {repair.assigned_to || "-"}
                               <br />
                               <strong>Data zgłoszenia:</strong>{" "}
                               {new Date(

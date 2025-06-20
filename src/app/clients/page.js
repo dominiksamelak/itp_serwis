@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import styles from "./page.module.css";
 import Navbar from "../components/Navbar";
 import { supabase } from "../utils/supabaseClients";
@@ -143,16 +144,19 @@ export default function ClientsPage() {
                       <th>Typ sprzętu</th>
                       <th>Producent</th>
                       <th>Model</th>
-                      <th>Numer seryjny</th>
-                      <th>Hasło</th>
-                      <th>Opis usterki</th>
+                      <th>Przyjął</th>
                       <th>Data zgłoszenia</th>
+                      <th>Data zakończenia</th>
                     </tr>
                   </thead>
                   <tbody>
                     {repairs.map((repair) => (
                       <tr key={repair.id}>
-                        <td>{repair.order_number || "-"}</td>
+                        <td>
+                          <Link href={`/reports/${repair.id}`} className={styles.repairLink}>
+                            {repair.order_number || "-"}
+                          </Link>
+                        </td>
                         <td
                           className={`${styles.statusCell} ${
                             styles["status-" + getStatusCssClass(repair.status)]
@@ -173,11 +177,14 @@ export default function ClientsPage() {
                         <td>{repair.equipment_type}</td>
                         <td>{repair.manufacturer}</td>
                         <td>{repair.model}</td>
-                        <td>{repair.serial_number}</td>
-                        <td>{repair.password || "-"}</td>
-                        <td>{repair.issue_description}</td>
+                        <td>{repair.assigned_to || '-'}</td>
                         <td>
                           {new Date(repair.created_at).toLocaleDateString()}
+                        </td>
+                        <td>
+                          {(repair.status === 'collected' || repair.status === 'cancelled')
+                            ? new Date(repair.collected_at || repair.cancelled_at).toLocaleDateString()
+                            : '-'}
                         </td>
                       </tr>
                     ))}

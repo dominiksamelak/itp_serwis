@@ -429,6 +429,56 @@
   font-weight: 600;
 }
 
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.headerContainer h2 {
+  margin: 0;
+}
+
+.filtersContainer {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterGroup label {
+  color: #b0b0b0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.filterInput, .filterSelect {
+  background: #232323;
+  color: #e5e7eb;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.filterInput::placeholder {
+  color: #777;
+}
+
+.filterInput:focus, .filterSelect:focus {
+  border-color: #2563eb;
+}
+
 .tableHeaderRow {
   display: flex;
   justify-content: space-between;

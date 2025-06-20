@@ -2,12 +2,12 @@
   min-height: 100vh;
   background-color: #111111;
   color: #e5e7eb;
-  padding: 2rem;
 }
 
 .content {
   max-width: 800px;
   margin: 0 auto;
+  padding: 2rem;
 }
 
 .detailsCard {
