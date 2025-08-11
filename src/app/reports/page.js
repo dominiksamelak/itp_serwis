@@ -329,19 +329,69 @@ function ReportsPageContent() {
                 >
                   &lt;
                 </button>
-                {Array.from(
-                  { length: getTotalPages(reports) },
-                  (_, i) => i + 1
-                ).map((page) => (
-                  <button
-                    key={page}
-                    disabled={localPage === page}
-                    className={localPage === page ? styles.activePage : ""}
-                    onClick={() => setLocalPage(page)}
-                  >
-                    {page}
-                  </button>
-                ))}
+                {(() => {
+                  const totalPages = getTotalPages(reports);
+                  const maxVisiblePages = 7;
+                  let startPage = Math.max(1, localPage - Math.floor(maxVisiblePages / 2));
+                  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                  
+                  // Adjust start page if we're near the end
+                  if (endPage - startPage < maxVisiblePages - 1) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                  }
+                  
+                  const pages = [];
+                  
+                  // Add first page if not in range
+                  if (startPage > 1) {
+                    pages.push(
+                      <button
+                        key={1}
+                        disabled={localPage === 1}
+                        className={localPage === 1 ? styles.activePage : ""}
+                        onClick={() => setLocalPage(1)}
+                      >
+                        1
+                      </button>
+                    );
+                    if (startPage > 2) {
+                      pages.push(<span key="ellipsis1" className={styles.ellipsis}>...</span>);
+                    }
+                  }
+                  
+                  // Add visible pages
+                  for (let i = startPage; i <= endPage; i++) {
+                    pages.push(
+                      <button
+                        key={i}
+                        disabled={localPage === i}
+                        className={localPage === i ? styles.activePage : ""}
+                        onClick={() => setLocalPage(i)}
+                      >
+                        {i}
+                      </button>
+                    );
+                  }
+                  
+                  // Add last page if not in range
+                  if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                      pages.push(<span key="ellipsis2" className={styles.ellipsis}>...</span>);
+                    }
+                    pages.push(
+                      <button
+                        key={totalPages}
+                        disabled={localPage === totalPages}
+                        className={localPage === totalPages ? styles.activePage : ""}
+                        onClick={() => setLocalPage(totalPages)}
+                      >
+                        {totalPages}
+                      </button>
+                    );
+                  }
+                  
+                  return pages;
+                })()}
                 <button
                   disabled={localPage === getTotalPages(reports)}
                   onClick={() => setLocalPage(localPage + 1)}

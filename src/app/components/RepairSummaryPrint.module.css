@@ -1,0 +1,330 @@
+/* Print-specific styles */
+@media print {
+  .printContainer {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 20px;
+    background: white;
+    color: black;
+    font-family: 'Arial', sans-serif;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 20px;
+  }
+
+  .logoSection h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    color: #2563eb;
+    margin: 0 0 10px 0;
+  }
+
+  .logoPlaceholder {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10pt;
+    color: #666;
+  }
+
+  .companyInfo p {
+    margin: 5px 0;
+    color: black;
+    font-size: 10pt;
+  }
+
+  .clientSection,
+  .equipmentSection,
+  .datesSection,
+  .repairSection,
+  .costSection {
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+  }
+
+  .clientSection h2,
+  .equipmentSection h2,
+  .repairSection h2,
+  .costSection h2 {
+    font-size: 14pt;
+    margin-bottom: 15px;
+    color: #2563eb;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+  }
+
+  .clientInfo p {
+    margin: 8px 0;
+    color: black;
+  }
+
+  .equipmentGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .equipmentItem {
+    margin-bottom: 8px;
+    color: black;
+  }
+
+  .datesSection {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+
+  .dateItem {
+    font-size: 11pt;
+    color: black;
+  }
+
+  .repairDescription {
+    border: 1px solid #000;
+    padding: 15px;
+    min-height: 80px;
+    background: #f9f9f9;
+    color: black;
+    font-size: 11pt;
+  }
+
+  .costBox {
+    border: 2px solid #000;
+    padding: 20px;
+    text-align: center;
+    font-size: 16pt;
+    background: #f0f0f0;
+    color: black;
+    font-weight: bold;
+  }
+
+  .signatures {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+
+  .signatureSection {
+    width: 45%;
+    text-align: center;
+  }
+
+  .signatureLine {
+    border-bottom: 1px solid #000;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+
+  .signatureLabel {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: black;
+    font-size: 11pt;
+  }
+
+  .signatureDate {
+    font-size: 10pt;
+    color: black;
+  }
+
+  .footer {
+    margin-top: 30px;
+    border-top: 1px solid #000;
+    padding-top: 15px;
+  }
+
+  .footer p {
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  .footer ul {
+    margin: 10px 0;
+    padding-left: 20px;
+  }
+
+  .footer li {
+    margin-bottom: 5px;
+    color: black;
+    font-size: 10pt;
+  }
+}
+
+/* Screen styles (for preview) */
+.printContainer {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  color: black;
+  font-family: 'Arial', sans-serif;
+  font-size: 12pt;
+  line-height: 1.4;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 20px;
+}
+
+.logoSection h1 {
+  font-size: 24pt;
+  font-weight: bold;
+  color: #2563eb;
+  margin: 0 0 10px 0;
+}
+
+.logoPlaceholder {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10pt;
+  color: #666;
+}
+
+.companyInfo p {
+  margin: 5px 0;
+  color: black;
+  font-size: 10pt;
+}
+
+.clientSection,
+.equipmentSection,
+.datesSection,
+.repairSection,
+.costSection {
+  margin-bottom: 25px;
+  page-break-inside: avoid;
+}
+
+.clientSection h2,
+.equipmentSection h2,
+.repairSection h2,
+.costSection h2 {
+  font-size: 14pt;
+  margin-bottom: 15px;
+  color: #2563eb;
+  border-bottom: 1px solid #000;
+  padding-bottom: 5px;
+}
+
+.clientInfo p {
+  margin: 8px 0;
+  color: black;
+}
+
+.equipmentGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.equipmentItem {
+  margin-bottom: 8px;
+  color: black;
+}
+
+.datesSection {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.dateItem {
+  font-size: 11pt;
+  color: black;
+}
+
+.repairDescription {
+  border: 1px solid #000;
+  padding: 15px;
+  min-height: 80px;
+  background: #f9f9f9;
+  color: black;
+  font-size: 11pt;
+}
+
+.costBox {
+  border: 2px solid #000;
+  padding: 20px;
+  text-align: center;
+  font-size: 16pt;
+  background: #f0f0f0;
+  color: black;
+  font-weight: bold;
+}
+
+.signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.signatureSection {
+  width: 45%;
+  text-align: center;
+}
+
+.signatureLine {
+  border-bottom: 1px solid #000;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.signatureLabel {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: black;
+  font-size: 11pt;
+}
+
+.signatureDate {
+  font-size: 10pt;
+  color: black;
+}
+
+.footer {
+  margin-top: 30px;
+  border-top: 1px solid #000;
+  padding-top: 15px;
+}
+
+.footer p {
+  margin-bottom: 10px;
+  color: black;
+}
+
+.footer ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.footer li {
+  margin-bottom: 5px;
+  color: black;
+} 

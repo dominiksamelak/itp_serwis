@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import styles from "./report-details.module.css";
 import { supabase } from "../../utils/supabaseClients";
+import RepairSummaryPrint from "../../components/RepairSummaryPrint";
 
 export default function ReportDetailsPage() {
   const { reportId } = useParams();
@@ -15,6 +16,8 @@ export default function ReportDetailsPage() {
   const [summary, setSummary] = useState("");
   const [cost, setCost] = useState("");
   const [isEditingSummary, setIsEditingSummary] = useState(false);
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
+  const printWindowRef = useRef(null);
 
   const updateEditMode = (repairData) => {
     if (
@@ -75,6 +78,38 @@ export default function ReportDetailsPage() {
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handlePrint = () => {
+    setShowPrintPreview(true);
+    setTimeout(() => {
+      if (printWindowRef.current) {
+        // Create a new window for printing
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Repair Summary - ${repair.order_number || repair.id}</title>
+              <style>
+                body { margin: 0; padding: 0; }
+                @media print {
+                  body { margin: 0; }
+                }
+              </style>
+            </head>
+            <body>
+              ${printWindowRef.current.outerHTML}
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+        setShowPrintPreview(false);
+      }
+    }, 100);
   };
 
   const handleEditClick = () => {
@@ -197,7 +232,7 @@ export default function ReportDetailsPage() {
             </div>
             <div className={`${styles.detailItem} ${styles.gridColSpan2}`}>
               <span className={styles.label}>Opis usterki</span>
-              <p className={styles.value}>{repair.description || "-"}</p>
+              <p className={styles.value}>{repair.issue_description || "-"}</p>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.label}>Data zgłoszenia</span>
@@ -258,12 +293,20 @@ export default function ReportDetailsPage() {
                         Zapisz podsumowanie
                       </button>
                     ) : (
-                      <button
-                        className={styles.saveButton}
-                        onClick={handleEditClick}
-                      >
-                        Edytuj podsumowanie
-                      </button>
+                      <>
+                        <button
+                          className={styles.saveButton}
+                          onClick={handleEditClick}
+                        >
+                          Edytuj podsumowanie
+                        </button>
+                        <button
+                          className={styles.printButton}
+                          onClick={handlePrint}
+                        >
+                          Drukuj podsumowanie
+                        </button>
+                      </>
                     )}
                   </div>
                 )}
@@ -272,6 +315,19 @@ export default function ReportDetailsPage() {
           </div>
         </div>
       </div>
+      
+      {/* Hidden print preview */}
+      {showPrintPreview && (
+        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+          <div ref={printWindowRef}>
+            <RepairSummaryPrint 
+              repair={repair} 
+              summary={summary} 
+              cost={cost} 
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

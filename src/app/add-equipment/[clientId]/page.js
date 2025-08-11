@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Navbar from "../../components/Navbar";
 import { supabase } from '../../utils/supabaseClients';
+import EquipmentReceiptPrint from "../../components/EquipmentReceiptPrint";
 
 const EQUIPMENT_TYPES = [
   "Laptop",
@@ -35,6 +36,9 @@ export default function AddEquipmentPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
+  const [orderNumber, setOrderNumber] = useState("");
+  const printWindowRef = useRef(null);
 
   useEffect(() => {
     async function fetchClient() {
@@ -58,6 +62,38 @@ export default function AddEquipmentPage({ params }) {
       ...prevForm,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const handlePrint = () => {
+    setShowPrintPreview(true);
+    setTimeout(() => {
+      if (printWindowRef.current) {
+        // Create a new window for printing
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Equipment Receipt - ${orderNumber}</title>
+              <style>
+                body { margin: 0; padding: 0; }
+                @media print {
+                  body { margin: 0; }
+                }
+              </style>
+            </head>
+            <body>
+              ${printWindowRef.current.outerHTML}
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+        setShowPrintPreview(false);
+      }
+    }, 100);
   };
 
   const handleSubmit = async (e) => {
@@ -92,6 +128,7 @@ export default function AddEquipmentPage({ params }) {
       }
       const nextNumber = maxNum + 1;
       const orderNumber = `L${String(nextNumber).padStart(2, '0')}/${month}/${year}`;
+      setOrderNumber(orderNumber);
 
       // Insert the equipment repair with status 'new' and order_number
       const { data, error } = await supabase
@@ -116,7 +153,15 @@ export default function AddEquipmentPage({ params }) {
       if (error) throw error;
 
       if (data) {
-        router.push(`/reports/${data.id}`);
+        // Trigger print after successful save
+        setTimeout(() => {
+          handlePrint();
+        }, 500);
+        
+        // Navigate to the report page after a short delay
+        setTimeout(() => {
+          router.push(`/reports/${data.id}`);
+        }, 1000);
       } else {
         router.push('/clients');
       }
@@ -275,6 +320,19 @@ export default function AddEquipmentPage({ params }) {
           </button>
         </form>
       </div>
+      
+      {/* Hidden print preview */}
+      {showPrintPreview && (
+        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+          <div ref={printWindowRef}>
+            <EquipmentReceiptPrint 
+              client={client} 
+              equipment={form} 
+              orderNumber={orderNumber}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

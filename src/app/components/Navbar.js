@@ -64,6 +64,17 @@ export default function Navbar() {
           <li><Link href="/add-client" className={styles.button}>Dodaj klienta</Link></li>
           <li><Link href="/add-report" className={styles.button}>Dodaj zgłoszenie</Link></li>
         </ul>
+        
+        {/* Mobile Navigation Buttons */}
+        <div className={styles.mobileNav}>
+          <Link href="/reports" className={styles.mobileNavButton}>
+            <span className={styles.mobileNavText}>Zgłoszenia</span>
+          </Link>
+          <Link href="/clients" className={styles.mobileNavButton}>
+            <span className={styles.mobileNavText}>Klienci</span>
+          </Link>
+        </div>
+        
         <div className={styles.searchContainer} ref={searchContainerRef}>
           <input
             type="text"

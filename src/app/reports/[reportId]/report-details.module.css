@@ -175,16 +175,38 @@
   transition: background-color 0.3s ease;
   border: none;
   cursor: pointer;
-  margin-top: 1rem;
   width: auto;
-  float: right;
+  flex-shrink: 0;
 }
 
 .saveButton:hover {
   background-color: #2563eb;
 }
 
+.printButton {
+  background-color: #16a34a;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.printButton:hover {
+  background-color: #15803d;
+}
+
 .saveButtonContainer {
+  display: flex;
+  flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  width: 100%;
+  margin-top: 1rem;
 }

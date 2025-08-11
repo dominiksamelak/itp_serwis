@@ -10,6 +10,59 @@
   padding: 2rem;
 }
 
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .content {
+    padding: 0.5rem;
+  }
+  
+  .content h2 {
+    margin: 0.5rem 0;
+    font-size: 1.5rem;
+  }
+  
+  .tableHeaderRow {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-bottom: 0.5rem;
+  }
+  
+  .pageSizeSelectWrapper {
+    justify-content: center;
+  }
+  
+  .clientsTable {
+    font-size: 0.9rem;
+  }
+  
+  .clientsTable th, .clientsTable td {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* Hide less important columns on mobile - show only name and phone */
+  .clientsTable th:nth-child(3),
+  .clientsTable td:nth-child(3),
+  .clientsTable th:nth-child(4),
+  .clientsTable td:nth-child(4),
+  .clientsTable th:nth-child(5),
+  .clientsTable td:nth-child(5),
+  .clientsTable th:nth-child(6),
+  .clientsTable td:nth-child(6) {
+    display: none;
+  }
+  
+  .pagination {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  .pagination button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
 .tableHeaderRow {
   display: flex;
   justify-content: space-between;
@@ -190,6 +243,13 @@
   background: #2563eb !important;
   color: #fff !important;
   font-weight: 600;
+}
+
+.ellipsis {
+  color: #9ca3af;
+  padding: 0.4em 0.9em;
+  font-size: 1rem;
+  user-select: none;
 }
 
 .form {

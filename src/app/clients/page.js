@@ -204,17 +204,69 @@ export default function ClientsPage() {
             <button disabled={page === 1} onClick={() => setPage(page - 1)}>
               &lt;
             </button>
-            {Array.from({ length: getTotalPages(clients) }, (_, i) => i + 1)
-              .slice(Math.max(0, page - 5), page + 4)
-              .map((p) => (
-                <button
-                  key={p}
-                  className={page === p ? styles.activePage : ""}
-                  onClick={() => setPage(p)}
-                >
-                  {p}
-                </button>
-              ))}
+            {(() => {
+              const totalPages = getTotalPages(clients);
+              const maxVisiblePages = 7;
+              let startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
+              let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+              
+              // Adjust start page if we're near the end
+              if (endPage - startPage < maxVisiblePages - 1) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+              }
+              
+              const pages = [];
+              
+              // Add first page if not in range
+              if (startPage > 1) {
+                pages.push(
+                  <button
+                    key={1}
+                    disabled={page === 1}
+                    className={page === 1 ? styles.activePage : ""}
+                    onClick={() => setPage(1)}
+                  >
+                    1
+                  </button>
+                );
+                if (startPage > 2) {
+                  pages.push(<span key="ellipsis1" className={styles.ellipsis}>...</span>);
+                }
+              }
+              
+              // Add visible pages
+              for (let i = startPage; i <= endPage; i++) {
+                pages.push(
+                  <button
+                    key={i}
+                    disabled={page === i}
+                    className={page === i ? styles.activePage : ""}
+                    onClick={() => setPage(i)}
+                  >
+                    {i}
+                  </button>
+                );
+              }
+              
+              // Add last page if not in range
+              if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                  pages.push(<span key="ellipsis2" className={styles.ellipsis}>...</span>);
+                }
+                pages.push(
+                  <button
+                    key={totalPages}
+                    disabled={page === totalPages}
+                    className={page === totalPages ? styles.activePage : ""}
+                    onClick={() => setPage(totalPages)}
+                  >
+                    {totalPages}
+                  </button>
+                );
+              }
+              
+              return pages;
+            })()}
             <button
               disabled={page === getTotalPages(clients)}
               onClick={() => setPage(page + 1)}
