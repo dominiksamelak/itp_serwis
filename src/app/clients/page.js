@@ -104,7 +104,11 @@ export default function ClientsPage() {
                       selectedClient?.id === client.id ? styles.selectedRow : ""
                     }
                   >
-                    <td className={styles.nameCell}>{client.name}</td>
+                    <td className={styles.nameCell}>
+                      <Link href={`/client-info?clientId=${client.id}`} className={styles.clientLink}>
+                        {client.name}
+                      </Link>
+                    </td>
                     <td>{client.phone}</td>
                     <td>{client.email}</td>
                     <td>

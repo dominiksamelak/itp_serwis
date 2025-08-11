@@ -448,4 +448,14 @@
 
 .repairLink:hover {
   text-decoration: underline;
+}
+
+.clientLink {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.clientLink:hover {
+  text-decoration: underline;
 } 
