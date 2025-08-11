@@ -17,6 +17,7 @@ export default function ReportDetailsPage() {
   const [cost, setCost] = useState("");
   const [isEditingSummary, setIsEditingSummary] = useState(false);
   const [showPrintPreview, setShowPrintPreview] = useState(false);
+  const [summarySaved, setSummarySaved] = useState(false);
   const printWindowRef = useRef(null);
 
   const updateEditMode = (repairData) => {
@@ -75,6 +76,7 @@ export default function ReportDetailsPage() {
       const updatedRepair = data[0];
       setRepair(updatedRepair);
       updateEditMode(updatedRepair);
+      setSummarySaved(true);
     } catch (err) {
       setError(err.message);
     }
@@ -300,12 +302,14 @@ export default function ReportDetailsPage() {
                         >
                           Edytuj podsumowanie
                         </button>
-                        <button
-                          className={styles.printButton}
-                          onClick={handlePrint}
-                        >
-                          Drukuj podsumowanie
-                        </button>
+                        {!summarySaved && (
+                          <button
+                            className={styles.printButton}
+                            onClick={handlePrint}
+                          >
+                            Drukuj podsumowanie
+                          </button>
+                        )}
                       </>
                     )}
                   </div>

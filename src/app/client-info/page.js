@@ -88,21 +88,23 @@ function ClientInfoContent() {
               {repairs.map(repair => (
                 <tr key={repair.id}>
                   <td>
-                    <Link href={`/reports/${repair.id}`} className={styles.nameCell}>
-                      {repair.order_number || '-'}
+                    <div>
+                      <Link href={`/reports/${repair.id}`} className={styles.nameCell}>
+                        {repair.order_number || '-'}
+                      </Link>
+                    </div>
+                    <div>
+                      {repair.manufacturer} {repair.model}
+                    </div>
+                    <div className={`${styles.statusCell} ${styles[`status-${repair.status.replace(/([A-Z])/g, '_$1').toLowerCase()}`]}`}>
+                      {statusLabels[repair.status] || repair.status}
+                    </div>
+                  </td>
+                  <td>
+                    <Link href={`/reports/${repair.id}`} className={styles.detailsButton}>
+                      Szczegóły
                     </Link>
                   </td>
-                  <td className={`${styles.statusCell} ${styles[`status-${repair.status.replace(/([A-Z])/g, '_$1').toLowerCase()}`]}`}>
-                    {statusLabels[repair.status] || repair.status}
-                  </td>
-                  <td>{repair.equipment_type}</td>
-                  <td>{repair.manufacturer}</td>
-                  <td>{repair.model}</td>
-                  <td>{repair.serial_number}</td>
-                  <td>{repair.password || '-'}</td>
-                  <td>{repair.issue_description}</td>
-                  <td>{new Date(repair.created_at).toLocaleDateString()}</td>
-                  <td>{repair.collected_at ? new Date(repair.collected_at).toLocaleDateString() : '-'}</td>
                 </tr>
               ))}
             </tbody>

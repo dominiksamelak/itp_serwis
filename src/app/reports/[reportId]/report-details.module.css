@@ -18,11 +18,12 @@
 }
 
 .detailsCard h1 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
   color: #3b82f6;
   border-bottom: 1px solid #333;
-  padding-bottom: 1rem;
+  padding-bottom: 0.75rem;
 }
 
 .detailsGrid {
@@ -42,14 +43,14 @@
 }
 
 .label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #9ca3af;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .value {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #e5e7eb;
   margin: 0;
 }

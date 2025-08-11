@@ -61,6 +61,106 @@
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
   }
+  
+  /* Client Info Page Mobile Styles */
+  .clientDetailsBox {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .clientDetailsBox p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  
+  .repairsTable {
+    display: block;
+    border: none;
+    background: none;
+  }
+  
+  .repairsTable thead {
+    display: none;
+  }
+  
+  .repairsTable tbody {
+    display: block;
+  }
+  
+  .repairsTable tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #232323;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    padding: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 1rem;
+  }
+  
+  .repairsTable td {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.85rem;
+    border: none;
+    padding: 0;
+    text-align: left;
+  }
+  
+  .repairsTable td:first-child {
+    flex: 1;
+  }
+  
+  .repairsTable td:last-child {
+    flex-shrink: 0;
+    flex: 0 0 auto;
+  }
+  
+  .repairsTable td:before {
+    display: none;
+  }
+  
+  .repairsTable td:first-child {
+    text-align: left;
+  }
+  
+  .repairsTable td:last-child {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Status styles for mobile */
+  .statusCell {
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    width: fit-content;
+    border: none;
+    padding: 0;
+  }
+  
+  .status-new {
+    color: #3b82f6;
+  }
+  
+  .status-in_progress {
+    color: #f59e0b;
+  }
+  
+  .status-ready_for_pickup {
+    color: #10b981;
+  }
+  
+  .status-collected {
+    color: #10b981;
+  }
+  
+  .status-cancelled {
+    color: #ef4444;
+  }
 }
 
 .tableHeaderRow {
