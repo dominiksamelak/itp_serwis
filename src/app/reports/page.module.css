@@ -45,20 +45,68 @@
     width: 100%;
   }
   
+  /* Mobile table transformation */
   .reportsTable {
-    font-size: 0.8rem;
+    display: block;
+    border: none;
+    background: none;
   }
   
-  .reportsTable th, .reportsTable td {
-    padding: 0.5rem 0.25rem;
-  }
-  
-  /* Hide less important columns on mobile */
-  .reportsTable th:nth-child(4),
-  .reportsTable td:nth-child(4),
-  .reportsTable th:nth-child(5),
-  .reportsTable td:nth-child(5) {
+  .reportsTable thead {
     display: none;
+  }
+  
+  .reportsTable tbody {
+    display: block;
+  }
+  
+  .reportsTable tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #232323;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    padding: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 1rem;
+  }
+  
+  .reportsTable td {
+    display: block;
+    border: none;
+    padding: 0;
+    text-align: left;
+  }
+  
+  .reportsTable td:first-child {
+    flex: 1;
+  }
+  
+  .reportsTable td:last-child {
+    flex-shrink: 0;
+    flex: 0 0 auto;
+  }
+  
+  .reportsTable td:before {
+    display: none;
+  }
+  
+  .reportsTable td {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.85rem;
+  }
+  
+  .reportsTable td:first-child {
+    text-align: left;
+  }
+  
+  .reportsTable td:last-child {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
   
   .pagination {
@@ -594,9 +642,39 @@
 
 .statusCell {
   font-weight: 600;
-  border-left: 4px solid #d4a373;
-  padding-left: 0.75rem;
 }
+
+@media (max-width: 768px) {
+  .statusCell {
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    width: fit-content;
+    border: none;
+    padding: 0;
+  }
+  
+  .status-new {
+    color: #3b82f6;
+  }
+  
+  .status-in_progress {
+    color: #f59e0b;
+  }
+  
+  .status-ready_for_pickup {
+    color: #10b981;
+  }
+  
+  .status-collected {
+    color: #10b981;
+  }
+  
+  .status-cancelled {
+    color: #ef4444;
+  }
+}
+
 .status-new {
   border-color: #d4a373;
   color: #d4a373;

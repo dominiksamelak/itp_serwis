@@ -198,36 +198,37 @@ function ReportsPageContent() {
                     <React.Fragment key={repair.id}>
                       <tr>
                         <td className={styles.centered}>
-                          <Link
-                            href={`/reports/${repair.id}`}
-                            className={styles.clientLink}
+                          <div>
+                            <Link
+                              href={`/reports/${repair.id}`}
+                              className={styles.clientLink}
+                            >
+                              {repair.order_number || "-"}
+                            </Link>
+                          </div>
+                          <div>
+                            <Link
+                              href={`/client-info?clientId=${repair.client_id}`}
+                              className={styles.clientLink}
+                            >
+                              {repair.clients?.name || "-"}
+                            </Link>
+                          </div>
+                          <div>
+                            {repair.manufacturer} {repair.model}
+                          </div>
+                          <div
+                            className={`${styles.statusCell} ${
+                              styles[
+                                `status-${repair.status
+                                  .replace(/([A-Z])/g, "_$1")
+                                  .toLowerCase()}`
+                              ]
+                            }`}
                           >
-                            {repair.order_number || "-"}
-                          </Link>
+                            {statusLabels[repair.status] || repair.status}
+                          </div>
                         </td>
-                        <td className={styles.centered}>
-                          <Link
-                            href={`/client-info?clientId=${repair.client_id}`}
-                            className={styles.clientLink}
-                          >
-                            {repair.clients?.name || "-"}
-                          </Link>
-                        </td>
-                        <td className={styles.centered}>
-                          {repair.manufacturer} {repair.model}
-                        </td>
-                        <td
-                          className={`${styles.statusCell} ${
-                            styles[
-                              `status-${repair.status
-                                .replace(/([A-Z])/g, "_$1")
-                                .toLowerCase()}`
-                            ]
-                          }`}
-                        >
-                          {statusLabels[repair.status] || repair.status}
-                        </td>
-                        <td className={styles.centered}>{repair.assigned_to || "-"}</td>
                         <td className={styles.centered}>
                           <button
                             className={styles.detailsButton}
