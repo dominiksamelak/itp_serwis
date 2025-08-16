@@ -53,15 +53,23 @@ function ClientInfoContent() {
       <div className={styles.content}>
         <h2>Szczegóły klienta</h2>
         <div className={styles.clientDetailsBox}>
-          <p><b>Imię i nazwisko:</b> {client.name}</p>
-          <p><b>Telefon:</b> {client.phone}</p>
-          <p><b>Email:</b> {client.email}</p>
-          <p><b>Adres:</b> {client.street}, {client.city} {client.zipcode}</p>
+          <p>
+            <b>Imię i nazwisko:</b> {client.name}
+          </p>
+          <p>
+            <b>Telefon:</b> {client.phone}
+          </p>
+          <p>
+            <b>Email:</b> {client.email}
+          </p>
+          <p>
+            <b>Adres:</b> {client.street}, {client.city} {client.zipcode}
+          </p>
         </div>
         <button
           className={styles.detailsButton}
-          style={{ margin: '1rem 0 2rem 0' }}
-          onClick={() => window.location.href = `/add-equipment/${clientId}`}
+          style={{ margin: "1rem 0 2rem 0" }}
+          onClick={() => (window.location.href = `/add-equipment/${clientId}`)}
         >
           Dodaj nowe zgłoszenie serwisowe
         </button>
@@ -82,26 +90,62 @@ function ClientInfoContent() {
                 <th>Opis usterki</th>
                 <th>Data zgłoszenia</th>
                 <th>Data zakończenia</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {repairs.map(repair => (
+              {repairs.map((repair) => (
                 <tr key={repair.id}>
                   <td>
-                    <div>
-                      <Link href={`/reports/${repair.id}`} className={styles.nameCell}>
-                        {repair.order_number || '-'}
-                      </Link>
-                    </div>
-                    <div>
-                      {repair.manufacturer} {repair.model}
-                    </div>
-                    <div className={`${styles.statusCell} ${styles[`status-${repair.status.replace(/([A-Z])/g, '_$1').toLowerCase()}`]}`}>
+                    <Link
+                      href={`/reports/${repair.id}`}
+                      className={styles.nameCell}
+                    >
+                      {repair.order_number || "-"}
+                    </Link>
+                    <div
+                      className={`${styles.statusCell} ${
+                        styles[
+                          `status-${repair.status
+                            .replace(/([A-Z])/g, "_$1")
+                            .toLowerCase()}`
+                        ]
+                      }`}
+                    >
                       {statusLabels[repair.status] || repair.status}
                     </div>
+                    <span className={styles.mobileOnly}>
+                      {repair.manufacturer || "-"} {repair.model || "-"}
+                    </span>
+                  </td>
+                  <td
+                    className={`${styles.statusCell} ${
+                      styles[
+                        `status-${repair.status
+                          .replace(/([A-Z])/g, "_$1")
+                          .toLowerCase()}`
+                      ]
+                    }`}
+                  >
+                    {statusLabels[repair.status] || repair.status}
+                  </td>
+                  <td>{repair.equipment_type || "-"}</td>
+                  <td>{repair.manufacturer || "-"}</td>
+                  <td>{repair.model || "-"}</td>
+                  <td>{repair.serial_number || "-"}</td>
+                  <td>{repair.password || "-"}</td>
+                  <td>{repair.issue_description || "-"}</td>
+                  <td>{new Date(repair.created_at).toLocaleDateString()}</td>
+                  <td>
+                    {repair.collected_at
+                      ? new Date(repair.collected_at).toLocaleDateString()
+                      : "-"}
                   </td>
                   <td>
-                    <Link href={`/reports/${repair.id}`} className={styles.detailsButton}>
+                    <Link
+                      href={`/reports/${repair.id}`}
+                      className={styles.detailsButton}
+                    >
                       Szczegóły
                     </Link>
                   </td>
@@ -121,4 +165,4 @@ export default function ClientInfoPage() {
       <ClientInfoContent />
     </Suspense>
   );
-} 
+}

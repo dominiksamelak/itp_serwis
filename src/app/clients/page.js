@@ -148,7 +148,7 @@ export default function ClientsPage() {
                     </tr>
                     {expandedClientId === client.id && (
                       <tr className={styles.expandedRow}>
-                        <td colSpan={4}>
+                        <td colSpan={4} style={{ padding: 0 }}>
                           <div className={styles.repairsSection}>
                             <h3>Historia napraw dla: {client.name}</h3>
                             {!repairs[client.id] ||
@@ -162,12 +162,11 @@ export default function ClientsPage() {
                                   <tr>
                                     <th>Numer zgłoszenia</th>
                                     <th>Status</th>
-                                    <th>Typ sprzętu</th>
                                     <th>Producent</th>
                                     <th>Model</th>
-                                    <th>Przyjął</th>
                                     <th>Data zgłoszenia</th>
                                     <th>Data zakończenia</th>
+                                    <th></th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -180,6 +179,30 @@ export default function ClientsPage() {
                                         >
                                           {repair.order_number || "-"}
                                         </Link>
+                                        <div
+                                          className={`${styles.statusCell} ${
+                                            styles[
+                                              "status-" +
+                                                getStatusCssClass(repair.status)
+                                            ]
+                                          }`}
+                                        >
+                                          {repair.status === "new"
+                                            ? "Nowe zgłoszenie"
+                                            : repair.status === "inProgress"
+                                            ? "W trakcie realizacji"
+                                            : repair.status === "readyForPickup"
+                                            ? "Gotowe do odbioru"
+                                            : repair.status === "collected"
+                                            ? "Odebrane"
+                                            : repair.status === "cancelled"
+                                            ? "Zgłoszenie odrzucone"
+                                            : repair.status}
+                                        </div>
+                                        <span className={styles.mobileOnly}>
+                                          {repair.manufacturer || "-"}{" "}
+                                          {repair.model || "-"}
+                                        </span>
                                       </td>
                                       <td
                                         className={`${styles.statusCell} ${
@@ -201,23 +224,27 @@ export default function ClientsPage() {
                                           ? "Zgłoszenie odrzucone"
                                           : repair.status}
                                       </td>
-                                      <td>{repair.equipment_type}</td>
-                                      <td>{repair.manufacturer}</td>
-                                      <td>{repair.model}</td>
-                                      <td>{repair.assigned_to || "-"}</td>
+                                      <td>{repair.manufacturer || "-"}</td>
+                                      <td>{repair.model || "-"}</td>
                                       <td>
                                         {new Date(
                                           repair.created_at
                                         ).toLocaleDateString()}
                                       </td>
                                       <td>
-                                        {repair.status === "collected" ||
-                                        repair.status === "cancelled"
+                                        {repair.collected_at
                                           ? new Date(
-                                              repair.collected_at ||
-                                                repair.cancelled_at
+                                              repair.collected_at
                                             ).toLocaleDateString()
                                           : "-"}
+                                      </td>
+                                      <td>
+                                        <Link
+                                          href={`/reports/${repair.id}`}
+                                          className={styles.detailsButton}
+                                        >
+                                          Szczegóły
+                                        </Link>
                                       </td>
                                     </tr>
                                   ))}

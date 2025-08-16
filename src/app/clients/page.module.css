@@ -164,6 +164,27 @@
 
   .repairsTable td:first-child {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: left;
+  }
+
+  .repairsTable td:first-child a,
+  .repairsTable td:first-child div,
+  .repairsTable td:first-child span {
+    font-size: 0.85rem !important;
+    text-align: left !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .repairsTable td:nth-child(2) {
+    display: none;
+  }
+
+  .repairsTable td:nth-child(3) {
+    display: none;
   }
 
   .repairsTable td:last-child {
@@ -185,14 +206,26 @@
     align-items: center;
   }
 
+  /* Hide extra columns for mobile - show only order number, status, equipment type, and details button */
+  .repairsTable td:nth-child(4),
+  .repairsTable td:nth-child(5),
+  .repairsTable td:nth-child(6),
+  .repairsTable td:nth-child(7),
+  .repairsTable td:nth-child(8),
+  .repairsTable td:nth-child(9),
+  .repairsTable td:nth-child(10) {
+    display: none;
+  }
+
   /* Status styles for mobile */
   .statusCell {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: 500;
     display: inline-block;
     width: fit-content;
     border: none;
     padding: 0;
+    border-left: none !important;
   }
 
   .status-new {
@@ -254,6 +287,9 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .clientsTable {
@@ -344,10 +380,48 @@
 .repairsTable td {
   text-align: left;
   padding: 1.2rem 0.5rem 1.2rem 1.5rem;
-  vertical-align: middle;
+  vertical-align: top;
   font-size: 0.9rem;
   border-bottom: 1px solid #2a2a2a;
   box-sizing: border-box;
+  line-height: 1.4;
+}
+
+/* Set specific column widths for better distribution */
+.repairsTable th:nth-child(1),
+.repairsTable td:nth-child(1) {
+  width: 15%;
+}
+
+.repairsTable th:nth-child(2),
+.repairsTable td:nth-child(2) {
+  width: 12%;
+  max-width: 12%;
+}
+
+.repairsTable th:nth-child(3),
+.repairsTable td:nth-child(3) {
+  width: 20%;
+}
+
+.repairsTable th:nth-child(4),
+.repairsTable td:nth-child(4) {
+  width: 20%;
+}
+
+.repairsTable th:nth-child(5),
+.repairsTable td:nth-child(5) {
+  width: 20%;
+}
+
+.repairsTable th:nth-child(6),
+.repairsTable td:nth-child(6) {
+  width: 20%;
+}
+
+.repairsTable th:nth-child(7),
+.repairsTable td:nth-child(7) {
+  width: 8%;
 }
 
 .repairsTable th {
@@ -464,6 +538,9 @@
   padding-left: 0.75rem;
   margin-left: -1.5rem;
   padding-right: 0.75rem;
+  white-space: normal;
+  word-wrap: break-word;
+  min-height: 1.4em;
 }
 .status-new {
   border-color: #d4a373;
@@ -533,11 +610,41 @@
   display: none !important;
 }
 
+/* Hide status in first column on desktop */
+.repairsTable td:first-child div {
+  display: none !important;
+}
+
+/* Ensure first column doesn't take extra space on desktop */
+.repairsTable td:first-child {
+  width: 15% !important;
+  max-width: 15% !important;
+}
+
+/* Remove status color line on client-info page */
+.repairsTable .statusCell {
+  border-left: none !important;
+}
+
+/* Collapse issue description after 3 lines */
+.repairsTable td:nth-child(8) {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Show mobile-only content on mobile */
 @media (max-width: 768px) {
   .mobileOnly {
     display: block !important;
     color: #e5e7eb !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Show status in first column on mobile */
+  .repairsTable td:first-child div {
+    display: block !important;
   }
 }
 
@@ -547,4 +654,18 @@
 
 .expandedRow td {
   border: none !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.expandedRow .repairsSection {
+  margin: 0;
+  border-radius: 0;
+  width: 100% !important;
+  overflow-x: auto !important;
+}
+
+.expandedRow .repairsTable {
+  min-width: 1200px !important;
+  width: 100% !important;
 }

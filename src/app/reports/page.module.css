@@ -363,6 +363,7 @@
   color: #e5e7eb;
   font-weight: 600;
   font-size: 1rem;
+  border-bottom: 2px solid #3b82f6;
 }
 
 .reportsTable tr {
@@ -704,7 +705,7 @@
 .statusCell {
   font-weight: 600;
   border-left: 4px solid;
-  padding-left: 0.5rem;
+  padding-left: 0.25rem;
 }
 
 .status-new {
