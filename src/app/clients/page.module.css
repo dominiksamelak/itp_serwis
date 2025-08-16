@@ -15,78 +15,131 @@
   .content {
     padding: 0.5rem;
   }
-  
+
   .content h2 {
     margin: 0.5rem 0;
     font-size: 1.5rem;
   }
-  
+
   .tableHeaderRow {
     flex-direction: column;
     gap: 0.5rem;
     align-items: stretch;
     margin-bottom: 0.5rem;
   }
-  
+
   .pageSizeSelectWrapper {
     justify-content: center;
   }
-  
+
   .clientsTable {
     font-size: 0.9rem;
+    display: block;
+    border: none;
+    background: none;
   }
-  
-  .clientsTable th, .clientsTable td {
-    padding: 0.5rem 0.75rem;
+
+  .clientsTable tbody {
+    display: block;
   }
-  
-  /* Hide less important columns on mobile - show only name and phone */
-  .clientsTable th:nth-child(3),
-  .clientsTable td:nth-child(3),
-  .clientsTable th:nth-child(4),
-  .clientsTable td:nth-child(4),
-  .clientsTable th:nth-child(5),
-  .clientsTable td:nth-child(5),
-  .clientsTable th:nth-child(6),
-  .clientsTable td:nth-child(6) {
+
+  .clientsTable tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #232323;
+    margin-bottom: 0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 1rem;
+  }
+
+  .clientsTable td {
+    display: block;
+    border: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .clientsTable td:first-child {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.85rem;
+    justify-content: center;
+    padding-left: 0;
+  }
+
+  .clientsTable td:last-child {
+    flex-shrink: 0;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-right: 0;
+  }
+
+  .clientsTable td:last-child button {
+    width: 120px;
+    text-align: center;
+    padding: 0.4em 0.8em;
+    margin: 0 !important;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* Hide table headers on mobile */
+  .clientsTable thead {
     display: none;
   }
-  
+
+  /* Hide all table cells except first and last */
+  .clientsTable td:nth-child(2),
+  .clientsTable td:nth-child(3) {
+    display: none;
+  }
+
   .pagination {
     flex-wrap: wrap;
     gap: 0.25rem;
   }
-  
+
   .pagination button {
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
   }
-  
+
   /* Client Info Page Mobile Styles */
   .clientDetailsBox {
     padding: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .clientDetailsBox p {
     margin: 0.5rem 0;
     font-size: 0.9rem;
   }
-  
+
   .repairsTable {
     display: block;
     border: none;
     background: none;
   }
-  
+
   .repairsTable thead {
     display: none;
   }
-  
+
   .repairsTable tbody {
     display: block;
   }
-  
+
   .repairsTable tr {
     display: flex;
     justify-content: space-between;
@@ -95,10 +148,10 @@
     margin-bottom: 0.75rem;
     border-radius: 8px;
     padding: 0.75rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     gap: 1rem;
   }
-  
+
   .repairsTable td {
     display: flex;
     flex-direction: column;
@@ -108,30 +161,30 @@
     padding: 0;
     text-align: left;
   }
-  
+
   .repairsTable td:first-child {
     flex: 1;
   }
-  
+
   .repairsTable td:last-child {
     flex-shrink: 0;
     flex: 0 0 auto;
   }
-  
+
   .repairsTable td:before {
     display: none;
   }
-  
+
   .repairsTable td:first-child {
     text-align: left;
   }
-  
+
   .repairsTable td:last-child {
     flex-direction: row;
     justify-content: center;
     align-items: center;
   }
-  
+
   /* Status styles for mobile */
   .statusCell {
     font-size: 0.75rem;
@@ -141,23 +194,23 @@
     border: none;
     padding: 0;
   }
-  
+
   .status-new {
     color: #3b82f6;
   }
-  
+
   .status-in_progress {
     color: #f59e0b;
   }
-  
+
   .status-ready_for_pickup {
     color: #10b981;
   }
-  
+
   .status-collected {
     color: #10b981;
   }
-  
+
   .status-cancelled {
     color: #ef4444;
   }
@@ -263,11 +316,11 @@
 .repairsSection {
   background: #232323;
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .repairsSection h3 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1.5rem 0;
   color: #e5e7eb;
   font-size: 1.2rem;
 }
@@ -290,15 +343,18 @@
 .repairsTable th,
 .repairsTable td {
   text-align: left;
-  padding: 0.75rem 1rem;
+  padding: 1.2rem 0.5rem 1.2rem 1.5rem;
   vertical-align: middle;
   font-size: 0.9rem;
+  border-bottom: 1px solid #2a2a2a;
+  box-sizing: border-box;
 }
 
 .repairsTable th {
   background: #111111;
   color: #e5e7eb;
   font-weight: 600;
+  border-bottom: 2px solid #3b82f6;
 }
 
 .repairsTable tr {
@@ -308,6 +364,10 @@
 
 .repairsTable tr:hover {
   background: #1f1f1f;
+}
+
+.repairsTable tbody tr:last-child {
+  border-bottom: none;
 }
 
 .pagination {
@@ -358,7 +418,7 @@
   background: #232323;
   padding: 2rem 2rem 1.5rem 2rem;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -402,6 +462,8 @@
   font-weight: 600;
   border-left: 4px solid #d4a373;
   padding-left: 0.75rem;
+  margin-left: -1.5rem;
+  padding-right: 0.75rem;
 }
 .status-new {
   border-color: #d4a373;
@@ -435,6 +497,12 @@
   transition: background 0.2s, color 0.2s;
   margin-left: 0.5rem;
 }
+
+@media (max-width: 768px) {
+  .addReportButton {
+    margin-left: 0;
+  }
+}
 .addReportButton:hover {
   background: #22c55e;
   color: #fff;
@@ -458,4 +526,25 @@
 
 .clientLink:hover {
   text-decoration: underline;
-} 
+}
+
+/* Hide mobile-only content on desktop */
+.mobileOnly {
+  display: none !important;
+}
+
+/* Show mobile-only content on mobile */
+@media (max-width: 768px) {
+  .mobileOnly {
+    display: block !important;
+    color: #e5e7eb !important;
+  }
+}
+
+.expandedRow {
+  background: #1a1a1a !important;
+}
+
+.expandedRow td {
+  border: none !important;
+}

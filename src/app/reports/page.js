@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
-import React from 'react';
+import React from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import Navbar from "../components/Navbar";
@@ -16,24 +16,26 @@ function ReportsPageContent() {
   const [pageSize, setPageSize] = useState(10);
   const [expandedRow, setExpandedRow] = useState(null);
   const detailsRef = useRef(null);
-  
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
+  const [statusFilter, setStatusFilter] = useState(
+    searchParams.get("status") || "all"
+  );
 
   useEffect(() => {
     const handler = setTimeout(() => {
       const params = new URLSearchParams(searchParams);
-      if (statusFilter && statusFilter !== 'all') {
-        params.set('status', statusFilter);
+      if (statusFilter && statusFilter !== "all") {
+        params.set("status", statusFilter);
       } else {
-        params.delete('status');
+        params.delete("status");
       }
       // Using on-page filters clears the global search param 'q'
-      params.delete('q');
-      
+      params.delete("q");
+
       router.push(`${pathname}?${params.toString()}`);
     }, 500);
 
@@ -46,7 +48,7 @@ function ReportsPageContent() {
     const getReports = async () => {
       setLoading(true);
       setError(null);
-      
+
       const queryParam = searchParams.get("q");
       const statusParam = searchParams.get("status");
 
@@ -55,30 +57,30 @@ function ReportsPageContent() {
         .select("*, clients(*)")
         .order("created_at", { ascending: false });
 
-      if (statusParam && statusParam !== 'all') {
-        queryBuilder = queryBuilder.eq('status', statusParam);
+      if (statusParam && statusParam !== "all") {
+        queryBuilder = queryBuilder.eq("status", statusParam);
       } else if (queryParam) {
         // Fallback to global search logic
         const { data: clientIds } = await supabase
-          .from('clients')
-          .select('id')
-          .ilike('name', `%${queryParam}%`);
-        
-        const matchingClientIds = clientIds ? clientIds.map(c => c.id) : [];
+          .from("clients")
+          .select("id")
+          .ilike("name", `%${queryParam}%`);
+
+        const matchingClientIds = clientIds ? clientIds.map((c) => c.id) : [];
 
         const orFilters = [
           `order_number.ilike.%${queryParam}%`,
           `manufacturer.ilike.%${queryParam}%`,
-          `model.ilike.%${queryParam}%`
+          `model.ilike.%${queryParam}%`,
         ];
 
         if (matchingClientIds.length > 0) {
-          orFilters.push(`client_id.in.(${matchingClientIds.join(',')})`);
+          orFilters.push(`client_id.in.(${matchingClientIds.join(",")})`);
         }
-        
-        queryBuilder = queryBuilder.or(orFilters.join(','));
+
+        queryBuilder = queryBuilder.or(orFilters.join(","));
       }
-      
+
       const { data, error } = await queryBuilder;
 
       if (error) {
@@ -100,9 +102,10 @@ function ReportsPageContent() {
         .eq("id", repairId);
 
       if (error) throw error;
-      
-      setReports(prev => prev.map(r => r.id === repairId ? {...r, status: newStatus} : r));
 
+      setReports((prev) =>
+        prev.map((r) => (r.id === repairId ? { ...r, status: newStatus } : r))
+      );
     } catch (err) {
       console.error(err);
     }
@@ -139,8 +142,18 @@ function ReportsPageContent() {
     };
   }, []);
 
-  if (loading) return <div className={styles.pageContainer}><div className={styles.content}>Ładowanie...</div></div>;
-  if (error) return <div className={styles.pageContainer}><div className={styles.content}>Błąd: {error}</div></div>;
+  if (loading)
+    return (
+      <div className={styles.pageContainer}>
+        <div className={styles.content}>Ładowanie...</div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className={styles.pageContainer}>
+        <div className={styles.content}>Błąd: {error}</div>
+      </div>
+    );
 
   return (
     <div className={styles.pageContainer}>
@@ -159,7 +172,9 @@ function ReportsPageContent() {
               >
                 <option value="all">Wszystkie</option>
                 {Object.entries(statusLabels).map(([key, label]) => (
-                  <option key={key} value={key}>{label}</option>
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -195,28 +210,26 @@ function ReportsPageContent() {
               </thead>
               <tbody>
                 {getPaginated(reports, localPage).map((repair) => (
-                    <React.Fragment key={repair.id}>
-                      <tr>
-                        <td className={styles.centered}>
-                          <div>
-                            <Link
-                              href={`/reports/${repair.id}`}
-                              className={styles.clientLink}
-                            >
-                              {repair.order_number || "-"}
-                            </Link>
-                          </div>
-                          <div>
-                            <Link
-                              href={`/client-info?clientId=${repair.client_id}`}
-                              className={styles.clientLink}
-                            >
-                              {repair.clients?.name || "-"}
-                            </Link>
-                          </div>
-                          <div>
+                  <React.Fragment key={repair.id}>
+                    <tr>
+                      <td className={styles.centered}>
+                        <Link
+                          href={`/reports/${repair.id}`}
+                          className={styles.clientLink}
+                        >
+                          {repair.order_number || "-"}
+                        </Link>
+                        {/* Mobile-only content - will be hidden on desktop */}
+                        <div className={styles.mobileOnly}>
+                          <Link
+                            href={`/client-info?clientId=${repair.client_id}`}
+                            className={styles.clientLink}
+                          >
+                            {repair.clients?.name || "-"}
+                          </Link>
+                          <span>
                             {repair.manufacturer} {repair.model}
-                          </div>
+                          </span>
                           <div
                             className={`${styles.statusCell} ${
                               styles[
@@ -228,92 +241,122 @@ function ReportsPageContent() {
                           >
                             {statusLabels[repair.status] || repair.status}
                           </div>
-                        </td>
-                        <td className={styles.centered}>
-                          <button
-                            className={styles.detailsButton}
-                            onClick={() =>
-                              setExpandedRow(
-                                expandedRow === repair.id ? null : repair.id
-                              )
-                            }
-                          >
-                            Szczegóły
-                          </button>
+                        </div>
+                      </td>
+                      <td className={styles.centered}>
+                        <Link
+                          href={`/client-info?clientId=${repair.client_id}`}
+                          className={styles.clientLink}
+                        >
+                          {repair.clients?.name || "-"}
+                        </Link>
+                      </td>
+                      <td className={styles.centered}>
+                        {repair.manufacturer} {repair.model}
+                      </td>
+                      <td className={styles.centered}>
+                        <div
+                          className={`${styles.statusCell} ${
+                            styles[
+                              `status-${repair.status
+                                .replace(/([A-Z])/g, "_$1")
+                                .toLowerCase()}`
+                            ]
+                          }`}
+                        >
+                          {statusLabels[repair.status] || repair.status}
+                        </div>
+                      </td>
+                      <td className={styles.centered}>
+                        {repair.assigned_to || "-"}
+                      </td>
+                      <td className={styles.centered}>
+                        <button
+                          className={styles.detailsButton}
+                          onClick={() =>
+                            setExpandedRow(
+                              expandedRow === repair.id ? null : repair.id
+                            )
+                          }
+                        >
+                          Szczegóły
+                        </button>
+                      </td>
+                    </tr>
+                    {expandedRow === repair.id && (
+                      <tr ref={detailsRef}>
+                        <td colSpan="6">
+                          <div>
+                            <strong>Numer zgłoszenia:</strong>{" "}
+                            {repair.order_number || "-"}
+                            <br />
+                            <strong>Status:</strong>{" "}
+                            <select
+                              value={repair.status}
+                              onChange={(e) =>
+                                handleStatusChange(repair.id, e.target.value)
+                              }
+                            >
+                              {Object.entries(statusLabels).map(
+                                ([key, label]) => (
+                                  <option key={key} value={key}>
+                                    {label}
+                                  </option>
+                                )
+                              )}
+                            </select>
+                            <br />
+                            <strong>Klient:</strong>{" "}
+                            <Link
+                              href={`/client-info?clientId=${repair.client_id}`}
+                              className={styles.clientLink}
+                            >
+                              {repair.clients?.name || "-"}
+                            </Link>
+                            <br />
+                            <strong>Typ sprzętu:</strong>{" "}
+                            {repair.equipment_type}
+                            <br />
+                            <strong>Producent:</strong> {repair.manufacturer}
+                            <br />
+                            <strong>Model:</strong> {repair.model}
+                            <br />
+                            <strong>Numer seryjny:</strong>{" "}
+                            {repair.serial_number}
+                            <br />
+                            <strong>Hasło:</strong> {repair.password || "-"}
+                            <br />
+                            <strong>Zasilacz w zestawie:</strong>{" "}
+                            {repair.power_adapter_included ? "Tak" : "Nie"}
+                            <br />
+                            <strong>Kopia danych:</strong>{" "}
+                            {repair.data_backup_requested ? "Tak" : "Nie"}
+                            <br />
+                            <strong>Opis usterki:</strong>{" "}
+                            {repair.issue_description}
+                            <br />
+                            <strong>Przyjął:</strong>{" "}
+                            {repair.assigned_to || "-"}
+                            <br />
+                            <strong>Data zgłoszenia:</strong>{" "}
+                            {new Date(repair.created_at).toLocaleDateString()}
+                            <br />
+                            {repair.status === "collected" &&
+                              repair.collected_at && (
+                                <>
+                                  <strong>Data zakończenia:</strong>{" "}
+                                  {new Date(
+                                    repair.collected_at
+                                  ).toLocaleDateString()}
+                                  <br />
+                                </>
+                              )}
+                          </div>
                         </td>
                       </tr>
-                      {expandedRow === repair.id && (
-                        <tr ref={detailsRef}>
-                          <td colSpan="6">
-                            <div>
-                              <strong>Numer zgłoszenia:</strong>{" "}
-                              {repair.order_number || "-"}
-                              <br />
-                              <strong>Status:</strong>{" "}
-                              <select
-                                value={repair.status}
-                                onChange={(e) =>
-                                  handleStatusChange(repair.id, e.target.value)
-                                }
-                              >
-                                {Object.entries(statusLabels).map(([key, label]) => (
-                                  <option key={key} value={key}>{label}</option>
-                                ))}
-                              </select>
-                              <br />
-                              <strong>Klient:</strong>{" "}
-                              <Link
-                                href={`/client-info?clientId=${repair.client_id}`}
-                                className={styles.clientLink}
-                              >
-                                {repair.clients?.name || "-"}
-                              </Link>
-                              <br />
-                              <strong>Typ sprzętu:</strong>{" "}
-                              {repair.equipment_type}
-                              <br />
-                              <strong>Producent:</strong> {repair.manufacturer}
-                              <br />
-                              <strong>Model:</strong> {repair.model}
-                              <br />
-                              <strong>Numer seryjny:</strong>{" "}
-                              {repair.serial_number}
-                              <br />
-                              <strong>Hasło:</strong>{" "}
-                              {repair.password || "-"}
-                              <br />
-                              <strong>Zasilacz w zestawie:</strong>{" "}
-                              {repair.power_adapter_included ? "Tak" : "Nie"}
-                              <br />
-                              <strong>Kopia danych:</strong>{" "}
-                              {repair.data_backup_requested ? "Tak" : "Nie"}
-                              <br />
-                              <strong>Opis usterki:</strong>{" "}
-                              {repair.issue_description}
-                              <br />
-                              <strong>Przyjął:</strong> {repair.assigned_to || "-"}
-                              <br />
-                              <strong>Data zgłoszenia:</strong>{" "}
-                              {new Date(
-                                repair.created_at
-                              ).toLocaleDateString()}
-                              <br />
-                              {repair.status === "collected" &&
-                                repair.collected_at && (
-                                  <>
-                                    <strong>Data zakończenia:</strong>{" "}
-                                    {new Date(
-                                      repair.collected_at
-                                    ).toLocaleDateString()}
-                                    <br />
-                                  </>
-                                )}
-                            </div>
-                          </td>
-                        </tr>
-                      )}
-                    </React.Fragment>
-                  ))}
+                    )}
+                  </React.Fragment>
+                ))}
               </tbody>
             </table>
             {getTotalPages(reports) > 1 && (
@@ -333,16 +376,22 @@ function ReportsPageContent() {
                 {(() => {
                   const totalPages = getTotalPages(reports);
                   const maxVisiblePages = 7;
-                  let startPage = Math.max(1, localPage - Math.floor(maxVisiblePages / 2));
-                  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-                  
+                  let startPage = Math.max(
+                    1,
+                    localPage - Math.floor(maxVisiblePages / 2)
+                  );
+                  let endPage = Math.min(
+                    totalPages,
+                    startPage + maxVisiblePages - 1
+                  );
+
                   // Adjust start page if we're near the end
                   if (endPage - startPage < maxVisiblePages - 1) {
                     startPage = Math.max(1, endPage - maxVisiblePages + 1);
                   }
-                  
+
                   const pages = [];
-                  
+
                   // Add first page if not in range
                   if (startPage > 1) {
                     pages.push(
@@ -356,10 +405,14 @@ function ReportsPageContent() {
                       </button>
                     );
                     if (startPage > 2) {
-                      pages.push(<span key="ellipsis1" className={styles.ellipsis}>...</span>);
+                      pages.push(
+                        <span key="ellipsis1" className={styles.ellipsis}>
+                          ...
+                        </span>
+                      );
                     }
                   }
-                  
+
                   // Add visible pages
                   for (let i = startPage; i <= endPage; i++) {
                     pages.push(
@@ -373,24 +426,30 @@ function ReportsPageContent() {
                       </button>
                     );
                   }
-                  
+
                   // Add last page if not in range
                   if (endPage < totalPages) {
                     if (endPage < totalPages - 1) {
-                      pages.push(<span key="ellipsis2" className={styles.ellipsis}>...</span>);
+                      pages.push(
+                        <span key="ellipsis2" className={styles.ellipsis}>
+                          ...
+                        </span>
+                      );
                     }
                     pages.push(
                       <button
                         key={totalPages}
                         disabled={localPage === totalPages}
-                        className={localPage === totalPages ? styles.activePage : ""}
+                        className={
+                          localPage === totalPages ? styles.activePage : ""
+                        }
                         onClick={() => setLocalPage(totalPages)}
                       >
                         {totalPages}
                       </button>
                     );
                   }
-                  
+
                   return pages;
                 })()}
                 <button

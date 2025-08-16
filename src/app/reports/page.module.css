@@ -15,51 +15,52 @@
   .content {
     padding: 1rem;
   }
-  
+
   .csvControls {
     flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 1rem;
   }
-  
+
   .csvButton {
     width: 100%;
     padding: 0.75rem;
   }
-  
+
   .headerContainer {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .filtersContainer {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .filterGroup {
     width: 100%;
   }
-  
-  .filterInput, .filterSelect {
+
+  .filterInput,
+  .filterSelect {
     width: 100%;
   }
-  
+
   /* Mobile table transformation */
   .reportsTable {
     display: block;
     border: none;
     background: none;
   }
-  
+
   .reportsTable thead {
     display: none;
   }
-  
+
   .reportsTable tbody {
     display: block;
   }
-  
+
   .reportsTable tr {
     display: flex;
     justify-content: space-between;
@@ -68,52 +69,88 @@
     margin-bottom: 0.75rem;
     border-radius: 8px;
     padding: 0.75rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     gap: 1rem;
   }
-  
-  .reportsTable td {
-    display: block;
-    border: none;
-    padding: 0;
-    text-align: left;
+
+  /* Show mobile-only content */
+  .reportsTable .mobileOnly {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.02rem;
+    margin-top: 0.05rem;
   }
-  
+
+  /* Hide all table cells except first and last */
+  .reportsTable td:nth-child(2),
+  .reportsTable td:nth-child(3),
+  .reportsTable td:nth-child(4),
+  .reportsTable td:nth-child(5) {
+    display: none;
+  }
+
+  /* First cell contains all the stacked information */
   .reportsTable td:first-child {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.02rem;
+    font-size: 0.85rem;
+    text-align: left;
   }
-  
+
+  /* Ensure consistent font size for all content in mobile view */
+  .reportsTable td:first-child a,
+  .reportsTable td:first-child span,
+  .reportsTable td:first-child div {
+    font-size: 0.85rem !important;
+  }
+
+  /* Last cell contains the details button */
   .reportsTable td:last-child {
     flex-shrink: 0;
     flex: 0 0 auto;
-  }
-  
-  .reportsTable td:before {
-    display: none;
-  }
-  
-  .reportsTable td {
     display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    font-size: 0.85rem;
-  }
-  
-  .reportsTable td:first-child {
-    text-align: left;
-  }
-  
-  .reportsTable td:last-child {
-    flex-direction: row;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    align-self: center;
   }
-  
+
+  /* Mobile-specific status cell styles */
+  .statusCell {
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    width: fit-content;
+    border: none;
+    padding: 0;
+  }
+
+  .status-new {
+    color: #3b82f6;
+  }
+
+  .status-in_progress {
+    color: #f59e0b;
+  }
+
+  .status-ready_for_pickup {
+    color: #10b981;
+  }
+
+  .status-collected {
+    color: #10b981;
+  }
+
+  .status-cancelled {
+    color: #ef4444;
+  }
+
   .pagination {
     flex-wrap: wrap;
     gap: 0.25rem;
   }
-  
+
   .pagination button {
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
@@ -177,7 +214,7 @@
   background: #232323;
   border-radius: 8px;
   padding: 1.5rem 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .statusHeader {
@@ -198,7 +235,9 @@
 }
 
 /* Remove old grid styles for .reportsGrid, .localReportsGrid, .onlineReportsGrid */
-.reportsGrid, .localReportsGrid, .onlineReportsGrid {
+.reportsGrid,
+.localReportsGrid,
+.onlineReportsGrid {
   display: none !important;
 }
 
@@ -284,9 +323,16 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 .tableWrapper {
@@ -305,9 +351,10 @@
   table-layout: fixed;
 }
 
-.reportsTable th, .reportsTable td {
+.reportsTable th,
+.reportsTable td {
   text-align: center;
-  padding: 0.75rem 1rem;
+  padding: 0.4rem 1rem;
   vertical-align: middle;
 }
 
@@ -338,19 +385,23 @@
 }
 
 /* Status row outlines */
-.new, .online_new {
+.new,
+.online_new {
   border-left: 4px solid #d4a373;
 }
-.inProgress, .online_in_progress {
+.inProgress,
+.online_in_progress {
   border-left: 4px solid #1e40af;
 }
 .readyForPickup {
   border-left: 4px solid #3b82f6;
 }
-.completed, .online_delivered {
+.completed,
+.online_delivered {
   border-left: 4px solid #16a34a;
 }
-.cancelled, .online_rejected {
+.cancelled,
+.online_rejected {
   border-left: 4px solid #ef4444;
 }
 .online_approved {
@@ -385,7 +436,11 @@
 }
 
 /* Remove old card/list styles */
-.reportsList, .statusListItem, .statusHeader, .reportItemsList, .sectionsRow {
+.reportsList,
+.statusListItem,
+.statusHeader,
+.reportItemsList,
+.sectionsRow {
   all: unset;
 }
 
@@ -397,20 +452,24 @@
   font-weight: 500;
   color: #fff;
 }
-.newLabel, .online_newLabel {
+.newLabel,
+.online_newLabel {
   background: #d4a373;
   color: #232323;
 }
-.inProgressLabel, .online_in_progressLabel {
+.inProgressLabel,
+.online_in_progressLabel {
   background: #1e40af;
 }
 .readyForPickupLabel {
   background: #3b82f6;
 }
-.completedLabel, .online_deliveredLabel {
+.completedLabel,
+.online_deliveredLabel {
   background: #16a34a;
 }
-.cancelledLabel, .online_rejectedLabel {
+.cancelledLabel,
+.online_rejectedLabel {
   background: #ef4444;
 }
 .online_approvedLabel {
@@ -440,7 +499,7 @@
   padding: 1.2rem 2.5rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 .choiceButton:hover {
   background: #3b82f6;
@@ -576,7 +635,8 @@
   font-weight: 500;
 }
 
-.filterInput, .filterSelect {
+.filterInput,
+.filterSelect {
   background: #232323;
   color: #e5e7eb;
   border: 1px solid #3b82f6;
@@ -592,7 +652,8 @@
   color: #777;
 }
 
-.filterInput:focus, .filterSelect:focus {
+.filterInput:focus,
+.filterSelect:focus {
   border-color: #2563eb;
 }
 
@@ -642,37 +703,8 @@
 
 .statusCell {
   font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .statusCell {
-    font-size: 0.75rem;
-    font-weight: 500;
-    display: inline-block;
-    width: fit-content;
-    border: none;
-    padding: 0;
-  }
-  
-  .status-new {
-    color: #3b82f6;
-  }
-  
-  .status-in_progress {
-    color: #f59e0b;
-  }
-  
-  .status-ready_for_pickup {
-    color: #10b981;
-  }
-  
-  .status-collected {
-    color: #10b981;
-  }
-  
-  .status-cancelled {
-    color: #ef4444;
-  }
+  border-left: 4px solid;
+  padding-left: 0.5rem;
 }
 
 .status-new {
@@ -706,6 +738,11 @@
   text-decoration: underline;
 }
 
+/* Hide mobile-only content on desktop */
+.mobileOnly {
+  display: none !important;
+}
+
 .reportsTable th:nth-child(4),
 .reportsTable td:nth-child(4) {
   width: 240px;
@@ -714,4 +751,4 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-} 
+}
