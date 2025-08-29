@@ -173,7 +173,6 @@ export default function ClientsPage() {
                                     <th>Model</th>
                                     <th>Data zgłoszenia</th>
                                     <th>Data zakończenia</th>
-                                    <th></th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -244,14 +243,6 @@ export default function ClientsPage() {
                                               repair.collected_at
                                             ).toLocaleDateString()
                                           : "-"}
-                                      </td>
-                                      <td>
-                                        <Link
-                                          href={`/reports/${repair.id}`}
-                                          className={styles.detailsButton}
-                                        >
-                                          Szczegóły
-                                        </Link>
                                       </td>
                                     </tr>
                                   ))}
