@@ -6,6 +6,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import Navbar from "../components/Navbar";
 import { supabase } from "../utils/supabaseClients";
+import { isMobileDevice } from "../utils/mobileDetection";
 import React from "react";
 
 export default function ClientsPage() {
@@ -29,7 +30,13 @@ export default function ClientsPage() {
   }, []);
 
   const handleClientClick = async (client) => {
-    // Toggle expansion
+    // On mobile, redirect to client-info page instead of expanding
+    if (isMobileDevice()) {
+      router.push(`/client-info?clientId=${client.id}`);
+      return;
+    }
+
+    // Desktop behavior - toggle expansion
     if (expandedClientId === client.id) {
       setExpandedClientId(null);
       return;
