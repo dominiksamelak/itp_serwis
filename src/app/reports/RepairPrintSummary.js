@@ -26,44 +26,44 @@ const RepairSummaryPrint = ({ repair, summary, cost }) => {
       {/* Client Data Section */}
       <div className={styles.section}>
         <h3>DANE KLIENTA</h3>
-        <p><strong>Imię i nazwisko:</strong> {repair.clients?.name || "ad"}</p>
-        <p><strong>Telefon:</strong> {repair.clients?.phone || "ad"}</p>
-        <p><strong>Email:</strong> {repair.clients?.email || "gg@ad.pl"}</p>
-        <p><strong>Adres:</strong> {repair.clients?.address || "ag, gag ag"}</p>
+        <p><strong>Imię i nazwisko:</strong> {repair.clients?.name || "-"}</p>
+        <p><strong>Telefon:</strong> {repair.clients?.phone || "-"}</p>
+        <p><strong>Email:</strong> {repair.clients?.email || "-"}</p>
+        <p><strong>Adres:</strong> {repair.clients?.address || "-"}</p>
       </div>
 
       {/* Equipment Info Section */}
       <div className={styles.section}>
         <h3>INFORMACJE O SPRZĘCIE</h3>
-        <p><strong>Numer zgłoszenia:</strong> {repair.order_number || "L04/09/2025"}</p>
-        <p><strong>Typ sprzętu:</strong> {repair.equipment_type || "Konsola"}</p>
-        <p><strong>Producent:</strong> {repair.manufacturer || "dadadad"}</p>
-        <p><strong>Model:</strong> {repair.model || "dd"}</p>
-        <p><strong>Numer seryjny:</strong> {repair.serial_number || "ddd"}</p>
+        <p><strong>Numer zgłoszenia:</strong> {repair.order_number || "-"}</p>
+        <p><strong>Typ sprzętu:</strong> {repair.equipment_type || "-"}</p>
+        <p><strong>Producent:</strong> {repair.manufacturer || "-"}</p>
+        <p><strong>Model:</strong> {repair.model || "-"}</p>
+        <p><strong>Numer seryjny:</strong> {repair.serial_number || "-"}</p>
         <p><strong>Zasilacz w zestawie:</strong> {repair.power_adapter_included ? "Tak" : "Nie"}</p>
         <p><strong>Kopia danych:</strong> {repair.data_backup_requested ? "Tak" : "Nie"}</p>
-        <p><strong>Opis usterki:</strong> {repair.issue_description || "d"}</p>
-        <p><strong>Data zgłoszenia:</strong> {new Date(repair.created_at).toLocaleString("pl-PL", {
+        <p><strong>Opis usterki:</strong> {repair.issue_description || "-"}</p>
+        <p><strong>Data zgłoszenia:</strong> {repair.created_at ? new Date(repair.created_at).toLocaleString("pl-PL", {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
           hour: "2-digit",
           minute: "2-digit",
           hour12: false,
-        }).replace(/:/g, ".") || "21.09.2025, 16:16:38"}</p>
+        }).replace(/:/g, ".") : "-"}</p>
         <p><strong>Data zakończenia:</strong> {currentDate}</p>
       </div>
 
       {/* Repair Description Section */}
       <div className={styles.section}>
         <h3>OPIS NAPRAWY</h3>
-        <p><strong>{summary || "ada"}</strong></p>
+        <p><strong>{summary || "-"}</strong></p>
       </div>
 
       {/* Repair Cost Section */}
       <div className={styles.section}>
         <h3>KOSZT NAPRAWY</h3>
-        <p><strong>{cost || "232"} zł</strong></p>
+        <p><strong>{cost ? `${cost} zł` : "-"}</strong></p>
       </div>
 
       {/* Signatures and Notes Section */}
