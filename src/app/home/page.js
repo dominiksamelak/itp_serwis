@@ -15,6 +15,7 @@ const STATUSES = [
   },
   { key: "collected", label: "Odebrane", className: "completed" },
   { key: "cancelled", label: "Anulowane", className: "cancelled" },
+  { key: "servkom", label: "SERVKOM", className: "servkom" },
 ];
 
 const Column = ({ title, repairs, status, className }) => (

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const { id, status, repair_summary, repair_cost } = await request.json();
+  const { id, status, repair_summary, repair_cost, notes } = await request.json();
 
   const updateData = {};
   if (status) {
@@ -26,6 +26,9 @@ export async function POST(request) {
   }
   if (repair_cost !== undefined) {
     updateData.repair_cost = repair_cost;
+  }
+  if (notes !== undefined) {
+    updateData.notes = notes;
   }
 
   const res = await fetch(

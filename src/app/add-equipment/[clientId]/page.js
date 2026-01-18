@@ -153,15 +153,8 @@ export default function AddEquipmentPage({ params }) {
       if (error) throw error;
 
       if (data) {
-        // Trigger print after successful save
-        setTimeout(() => {
-          handlePrint();
-        }, 500);
-        
-        // Navigate to the report page after a short delay
-        setTimeout(() => {
-          router.push(`/reports/${data.id}`);
-        }, 1000);
+        // Navigate to the print page
+        router.push(`/print-receipt/${data.id}`);
       } else {
         router.push('/clients');
       }

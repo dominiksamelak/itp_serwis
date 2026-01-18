@@ -2,16 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 import { isMobileDevice } from "./utils/mobileDetection";
 
 export default function Home() {
   const router = useRouter();
+  const { isSignedIn, isLoaded } = useAuth();
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!isLoaded) return;
+
     // Check if we're on the client side
     if (typeof window !== 'undefined') {
+      if (!isSignedIn) {
+        router.push('/sign-in');
+        return;
+      }
+
       const mobile = isMobileDevice();
       setIsMobile(mobile);
       
@@ -24,7 +33,7 @@ export default function Home() {
       
       setIsLoading(false);
     }
-  }, [router]);
+  }, [router, isSignedIn, isLoaded]);
 
   return (
     <div style={{ 

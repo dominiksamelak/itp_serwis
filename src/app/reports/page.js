@@ -117,6 +117,7 @@ function ReportsPageContent() {
     readyForPickup: "Gotowe do odbioru",
     collected: "Odebrane",
     cancelled: "Anulowane",
+    servkom: "SERVKOM",
   };
 
   const getPaginated = (data, page) => {

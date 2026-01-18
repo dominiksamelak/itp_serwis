@@ -76,6 +76,7 @@ export default function ClientDetailsPage() {
                     repair.status === 'ready_for_pickup' ? 'Gotowe do odbioru' :
                     repair.status === 'collected' ? 'Odebrane' :
                     repair.status === 'cancelled' ? 'Zgłoszenie odrzucone' :
+                    repair.status === 'servkom' ? 'SERVKOM' :
                     repair.status
                   }</td>
                   <td>{repair.equipment_type}</td>

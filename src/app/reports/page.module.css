@@ -146,6 +146,10 @@
     color: #ef4444;
   }
 
+  .status-servkom {
+    color: #8b5cf6;
+  }
+
   .pagination {
     flex-wrap: wrap;
     gap: 0.25rem;

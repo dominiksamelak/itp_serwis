@@ -1,21 +1,25 @@
+// app/reports/[reportId]/page.js
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import styles from "./report-details.module.css";
 import { supabase } from "../../utils/supabaseClients";
-import RepairSummaryPrint from "../../components/RepairSummaryPrint";
+import RepairSummaryPrint from "../RepairPrintSummary";
 
 export default function ReportDetailsPage() {
   const { reportId } = useParams();
+  const router = useRouter();
   const [repair, setRepair] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [summary, setSummary] = useState("");
   const [cost, setCost] = useState("");
+  const [notes, setNotes] = useState("");
   const [isEditingSummary, setIsEditingSummary] = useState(false);
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [showPrintPreview, setShowPrintPreview] = useState(false);
   const [summarySaved, setSummarySaved] = useState(false);
   const printWindowRef = useRef(null);
@@ -50,6 +54,7 @@ export default function ReportDetailsPage() {
       setRepair(updatedRepair);
       setSummary(updatedRepair.repair_summary || "");
       setCost(updatedRepair.repair_cost || "");
+      setNotes(updatedRepair.notes || "");
       updateEditMode(updatedRepair);
     } catch (err) {
       setError(err.message);
@@ -75,6 +80,9 @@ export default function ReportDetailsPage() {
       const data = await res.json();
       const updatedRepair = data[0];
       setRepair(updatedRepair);
+      setSummary(updatedRepair.repair_summary || "");
+      setCost(updatedRepair.repair_cost || "");
+      setNotes(updatedRepair.notes || "");
       updateEditMode(updatedRepair);
       setSummarySaved(true);
     } catch (err) {
@@ -82,22 +90,51 @@ export default function ReportDetailsPage() {
     }
   };
 
+  const handleSaveNotes = async () => {
+    if (!repair) return;
+
+    try {
+      const res = await fetch(`/api/repairs/update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: repair.id,
+          notes: notes,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error("Failed to save notes");
+      }
+      const data = await res.json();
+      const updatedRepair = data[0];
+      setRepair(updatedRepair);
+      setNotes(updatedRepair.notes || "");
+      setIsEditingNotes(false);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleEditNotes = () => {
+    setIsEditingNotes(true);
+  };
+
   const handlePrint = () => {
     setShowPrintPreview(true);
     setTimeout(() => {
       if (printWindowRef.current) {
-        // Create a new window for printing
-        const printWindow = window.open('', '_blank');
+        const printWindow = window.open("", "_blank");
         printWindow.document.write(`
           <!DOCTYPE html>
           <html>
             <head>
               <title>Repair Summary - ${repair.order_number || repair.id}</title>
               <style>
-                body { margin: 0; padding: 0; }
-                @media print {
-                  body { margin: 0; }
-                }
+                body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+                @media print { body { margin: 0; } }
+                h2, h3 { margin: 0 0 10px; }
+                p { margin: 5px 0; }
+                div { margin-bottom: 20px; }
               </style>
             </head>
             <body>
@@ -114,6 +151,10 @@ export default function ReportDetailsPage() {
     }, 100);
   };
 
+  const handlePrintReceipt = () => {
+    router.push(`/print-receipt/${reportId}`);
+  };
+
   const handleEditClick = () => {
     setIsEditingSummary(true);
   };
@@ -123,9 +164,9 @@ export default function ReportDetailsPage() {
       const fetchRepairDetails = async () => {
         try {
           const { data, error } = await supabase
-            .from('equipment_repairs')
-            .select('*, clients(*)')
-            .eq('id', reportId)
+            .from("equipment_repairs")
+            .select("*, clients(*)")
+            .eq("id", reportId)
             .single();
 
           if (error) {
@@ -135,6 +176,7 @@ export default function ReportDetailsPage() {
           setRepair(data);
           setSummary(data.repair_summary || "");
           setCost(data.repair_cost || "");
+          setNotes(data.notes || "");
           updateEditMode(data);
         } catch (err) {
           setError(err.message);
@@ -184,9 +226,7 @@ export default function ReportDetailsPage() {
       <Navbar />
       <div className={styles.content}>
         <div className={styles.detailsCard}>
-          <h1>
-            Szczegóły zgłoszenia: {repair.order_number || `#${repair.id}`}
-          </h1>
+          <h1>Szczegóły zgłoszenia: {repair.order_number || `#${repair.id}`}</h1>
           <div className={styles.detailsGrid}>
             <div className={styles.detailItem}>
               <span className={styles.label}>Status</span>
@@ -206,6 +246,7 @@ export default function ReportDetailsPage() {
                 <option value="readyForPickup">Gotowe do odbioru</option>
                 <option value="collected">Odebrane</option>
                 <option value="cancelled">Anulowane</option>
+                <option value="servkom">SERVKOM</option>
               </select>
             </div>
             <div className={styles.detailItem}>
@@ -242,14 +283,47 @@ export default function ReportDetailsPage() {
                 {new Date(repair.created_at).toLocaleString()}
               </span>
             </div>
-            {repair.collected_at && (
-              <div className={styles.detailItem}>
-                <span className={styles.label}>Data odbioru</span>
-                <span className={styles.value}>
-                  {new Date(repair.collected_at).toLocaleString()}
-                </span>
-              </div>
-            )}
+            <div className={`${styles.detailItem} ${styles.gridColSpan2}`}>
+              <span className={styles.label}>Notatki</span>
+              {isEditingNotes ? (
+                <>
+                  <textarea
+                    className={styles.textarea}
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    rows="4"
+                    placeholder="Wprowadź notatki..."
+                  />
+                  <div className={styles.notesButtonContainer}>
+                    <button
+                      className={styles.saveButton}
+                      onClick={handleSaveNotes}
+                    >
+                      Zapisz
+                    </button>
+                    <button
+                      className={styles.cancelButton}
+                      onClick={() => {
+                        setIsEditingNotes(false);
+                        setNotes(repair.notes || "");
+                      }}
+                    >
+                      Anuluj
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className={styles.value}>{notes || "-"}</p>
+                  <button
+                    className={styles.editButton}
+                    onClick={handleEditNotes}
+                  >
+                    Edytuj
+                  </button>
+                </>
+              )}
+            </div>
             {(repair.status === "readyForPickup" || repair.status === "collected") && (
               <>
                 <div className={`${styles.detailItem} ${styles.gridColSpan2}`}>
@@ -302,10 +376,10 @@ export default function ReportDetailsPage() {
                         >
                           Edytuj podsumowanie
                         </button>
-                        {!summarySaved && (
+                        {summary && cost && (
                           <button
                             className={styles.printButton}
-                            onClick={handlePrint}
+                            onClick={() => router.push(`/print-summary/${repair.id}`)}
                           >
                             Drukuj podsumowanie
                           </button>
@@ -317,21 +391,47 @@ export default function ReportDetailsPage() {
               </>
             )}
           </div>
+
+          {/* Floating print button for new repairs */}
+          {repair && repair.status === "new" && (
+            <button
+              className={styles.floatingPrintButton}
+              onClick={handlePrintReceipt}
+              title="Drukuj potwierdzenie przyjęcia"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 9V2H18V9M6 18H4C2.89543 18 2 17.1046 2 16V11C2 9.89543 2.89543 9 4 9H20C21.1046 9 22 9.89543 22 11V16C22 17.1046 21.1046 18 20 18H18M6 14H18V22H6V14Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
-      
-      {/* Hidden print preview */}
+
       {showPrintPreview && (
-        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+        <div style={{ position: "absolute", left: "-9999px", top: "-9999px" }}>
           <div ref={printWindowRef}>
-            <RepairSummaryPrint 
-              repair={repair} 
-              summary={summary} 
-              cost={cost} 
+            <RepairSummaryPrint
+              repair={repair}
+              summary={summary}
+              cost={cost}
             />
           </div>
         </div>
       )}
+
+
     </div>
   );
-} 
+}

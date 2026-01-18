@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styles from './Navbar.module.css';
 import { useRouter } from 'next/navigation';
+import { UserButton, useUser } from '@clerk/nextjs';
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -11,6 +12,7 @@ export default function Navbar() {
   const [isSearching, setIsSearching] = useState(false);
   const router = useRouter();
   const searchContainerRef = useRef(null);
+  const { isSignedIn, user } = useUser();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -73,6 +75,9 @@ export default function Navbar() {
           <Link href="/clients" className={styles.mobileNavButton}>
             <span className={styles.mobileNavText}>Klienci</span>
           </Link>
+          <Link href="/add-report" className={styles.mobileNavButtonBlue}>
+            <span className={styles.mobileNavText}>Dodaj zgłoszenie</span>
+          </Link>
         </div>
         
         <div className={styles.searchContainer} ref={searchContainerRef}>
@@ -127,6 +132,18 @@ export default function Navbar() {
             </div>
           )}
         </div>
+        
+        {isSignedIn && (
+          <div className={styles.userButtonContainer}>
+            <UserButton 
+              appearance={{
+                elements: {
+                  avatarBox: "w-10 h-10",
+                },
+              }}
+            />
+          </div>
+        )}
       </div>
     </nav>
   );

@@ -1,0 +1,68 @@
+.pageContainer {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 20px;
+  z-index: 1000;
+}
+
+.printButton,
+.closeButton {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.printButton {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.printButton:hover {
+  background-color: #2563eb;
+}
+
+.closeButton {
+  background-color: #6b7280;
+  color: white;
+}
+
+.closeButton:hover {
+  background-color: #4b5563;
+}
+
+.documentContainer {
+  display: flex;
+  justify-content: center;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+@media print {
+  .buttonContainer {
+    display: none;
+  }
+
+  .pageContainer {
+    background: white;
+    padding: 0;
+  }
+
+  .documentContainer {
+    padding: 0;
+    border-radius: 0;
+  }
+}

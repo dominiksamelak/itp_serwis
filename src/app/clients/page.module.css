@@ -284,6 +284,10 @@
   .status-cancelled {
     color: #ef4444;
   }
+
+  .status-servkom {
+    color: #8b5cf6;
+  }
 }
 
 .tableHeaderRow {

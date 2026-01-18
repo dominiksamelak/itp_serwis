@@ -4,170 +4,194 @@
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 20px;
+    padding: 15px;
     background: white;
     color: black;
     font-family: 'Arial', sans-serif;
-    font-size: 12pt;
-    line-height: 1.4;
+    font-size: 9pt;
+    line-height: 1.3;
+    position: relative;
   }
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    margin-top: 0;
   }
 
-  .logoSection h1 {
-    font-size: 20pt;
-    font-weight: bold;
-    color: #2563eb;
-    margin: 0 0 8px 0;
+  .logoTopLeft {
+    flex-shrink: 0;
   }
 
-  .logoPlaceholder {
-    width: 60px;
-    height: 60px;
-    border: 2px solid #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 8pt;
-    color: #666;
+  .companyInfo {
+    text-align: right;
+    flex-shrink: 0;
   }
 
   .companyInfo p {
-    margin: 3px 0;
+    margin: 1px 0;
     color: black;
-    font-size: 9pt;
+    font-size: 8pt;
+    line-height: 1.2;
   }
 
   .title {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
   }
 
   .title h2 {
-    font-size: 16pt;
-    margin: 0 0 10px 0;
+    font-size: 14pt;
+    margin: 0 0 5px 0;
     color: black;
+    font-weight: bold;
   }
 
   .receiptNumber {
     font-size: 12pt;
     font-weight: bold;
-    color: #2563eb;
+    color: black;
     margin: 0;
   }
 
-  .clientSection,
-  .equipmentSection,
-  .issueSection,
-  .detailsSection {
-    margin-bottom: 20px;
+  .repairInfoSection {
+    margin-bottom: 8px;
     page-break-inside: avoid;
   }
 
-  .clientSection h3,
-  .equipmentSection h3,
-  .issueSection h3 {
-    font-size: 12pt;
+  .issueSection {
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
+
+  .regulationsSection {
     margin-bottom: 10px;
-    color: #2563eb;
-    border-bottom: 1px solid #000;
-    padding-bottom: 3px;
+    page-break-inside: auto;
   }
 
-  .clientInfo p {
-    margin: 6px 0;
+  .consumerInfoSection,
+  .rodoSection {
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
+
+  .repairInfoSection h3,
+  .issueSection h3,
+  .regulationsSection h3,
+  .consumerInfoSection h3,
+  .rodoSection h3 {
+    font-size: 10pt;
+    margin-bottom: 4px;
     color: black;
+    font-weight: bold;
+    text-decoration: underline;
   }
 
-  .equipmentGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .equipmentItem {
-    margin-bottom: 6px;
+  .regulationsSection h4 {
+    font-size: 9pt;
+    margin-bottom: 5px;
     color: black;
+    font-weight: bold;
+  }
+
+  .repairInfo {
+    margin-left: 0;
+  }
+
+  .repairInfo p {
+    margin: 1px 0;
+    color: black;
+    font-size: 8pt;
+    line-height: 1.2;
   }
 
   .issueDescription {
+    padding: 0;
+    min-height: 15px;
+    color: black;
+    font-size: 8pt;
+    margin-top: 2px;
+  }
+
+  .regulationsList,
+  .rodoList {
+    margin: 5px 0;
+    padding-left: 18px;
+    font-size: 7pt;
+    line-height: 1.3;
+  }
+
+  .regulationsList li,
+  .rodoList li {
+    margin-bottom: 3px;
+    color: black;
+  }
+
+  .regulationsList ol[type="a"],
+  .rodoList ol[type="a"] {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 20px;
+  }
+
+  .regulationsList ol[type="a"] li,
+  .rodoList ol[type="a"] li {
+    margin-bottom: 4px;
+  }
+
+  .consumerInfoSection p {
+    margin: 3px 0;
+    color: black;
+    font-size: 7pt;
+    line-height: 1.3;
+    text-align: justify;
+  }
+
+  .confirmationBox {
     border: 1px solid #000;
-    padding: 10px;
-    min-height: 60px;
-    background: #f9f9f9;
+    padding: 8px;
+    margin: 10px 0;
+    background: white;
     color: black;
-    font-size: 10pt;
+    font-size: 8pt;
+    line-height: 1.3;
   }
 
-  .detailsSection {
-    display: flex;
-    justify-content: space-between;
-    margin: 15px 0;
-  }
-
-  .detailItem {
-    font-size: 10pt;
+  .confirmationBox p {
+    margin: 0;
     color: black;
-  }
-
-  .signatures {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    margin-bottom: 25px;
   }
 
   .signatureSection {
-    width: 45%;
-    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 10px;
   }
 
   .signatureLine {
-    border-bottom: 1px solid #000;
-    height: 40px;
-    margin-bottom: 8px;
+    border-bottom: 1px dotted #000;
+    height: 25px;
+    margin-bottom: 3px;
   }
 
   .signatureLabel {
-    font-weight: bold;
-    margin-bottom: 3px;
+    font-size: 8pt;
     color: black;
-    font-size: 10pt;
+    margin: 0;
   }
 
-  .signatureDate {
-    font-size: 9pt;
-    color: black;
+  .logoTopLeft {
+    flex-shrink: 0;
   }
 
-  .footer {
-    margin-top: 25px;
-    border-top: 1px solid #000;
-    padding-top: 10px;
+  .logoImage {
+    max-width: 150px;
+    height: auto;
+    display: block;
   }
 
-  .footer p {
-    margin-bottom: 8px;
-    color: black;
-  }
-
-  .footer ul {
-    margin: 8px 0;
-    padding-left: 15px;
-  }
-
-  .footer li {
-    margin-bottom: 4px;
-    color: black;
-    font-size: 9pt;
-  }
 }
 
 /* Screen styles (for preview) */
@@ -175,169 +199,190 @@
   width: 210mm;
   min-height: 297mm;
   margin: 20px auto;
-  padding: 20px;
+  padding: 15px;
   background: white;
   color: black;
   font-family: 'Arial', sans-serif;
-  font-size: 12pt;
-  line-height: 1.4;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #000;
-  padding-bottom: 15px;
-}
-
-.logoSection h1 {
-  font-size: 20pt;
-  font-weight: bold;
-  color: #2563eb;
-  margin: 0 0 8px 0;
-}
-
-.logoPlaceholder {
-  width: 60px;
-  height: 60px;
-  border: 2px solid #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8pt;
-  color: #666;
-}
-
-.companyInfo p {
-  margin: 3px 0;
-  color: black;
   font-size: 9pt;
+  line-height: 1.3;
+  position: relative;
 }
 
-.title {
-  text-align: center;
-  margin-bottom: 25px;
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    margin-top: 0;
+  }
 
-.title h2 {
-  font-size: 16pt;
-  margin: 0 0 10px 0;
-  color: black;
-}
+  .logoTopLeft {
+    flex-shrink: 0;
+  }
 
-.receiptNumber {
-  font-size: 12pt;
-  font-weight: bold;
-  color: #2563eb;
-  margin: 0;
-}
+  .companyInfo {
+    text-align: right;
+    flex-shrink: 0;
+  }
 
-.clientSection,
-.equipmentSection,
-.issueSection,
-.detailsSection {
-  margin-bottom: 20px;
-  page-break-inside: avoid;
-}
+  .companyInfo p {
+    margin: 1px 0;
+    color: black;
+    font-size: 8pt;
+    line-height: 1.2;
+  }
 
-.clientSection h3,
-.equipmentSection h3,
-.issueSection h3 {
-  font-size: 12pt;
-  margin-bottom: 10px;
-  color: #2563eb;
-  border-bottom: 1px solid #000;
-  padding-bottom: 3px;
-}
+  .title {
+    text-align: center;
+    margin-bottom: 10px;
+  }
 
-.clientInfo p {
-  margin: 6px 0;
-  color: black;
-}
+  .title h2 {
+    font-size: 14pt;
+    margin: 0 0 5px 0;
+    color: black;
+    font-weight: bold;
+  }
 
-.equipmentGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
+  .receiptNumber {
+    font-size: 14pt;
+    font-weight: bold;
+    color: black;
+    margin: 0;
+  }
 
-.equipmentItem {
-  margin-bottom: 6px;
-  color: black;
-}
+  .repairInfoSection {
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
 
-.issueDescription {
-  border: 1px solid #000;
-  padding: 10px;
-  min-height: 60px;
-  background: #f9f9f9;
-  color: black;
-  font-size: 10pt;
-}
+  .issueSection {
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
 
-.detailsSection {
-  display: flex;
-  justify-content: space-between;
-  margin: 15px 0;
-}
+  .regulationsSection {
+    margin-bottom: 10px;
+    page-break-inside: auto;
+  }
 
-.detailItem {
-  font-size: 10pt;
-  color: black;
-}
+  .consumerInfoSection,
+  .rodoSection {
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
 
-.signatures {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-  margin-bottom: 25px;
-}
+  .repairInfoSection h3,
+  .issueSection h3,
+  .regulationsSection h3,
+  .consumerInfoSection h3,
+  .rodoSection h3 {
+    font-size: 10pt;
+    margin-bottom: 4px;
+    color: black;
+    font-weight: bold;
+    text-decoration: underline;
+  }
 
-.signatureSection {
-  width: 45%;
-  text-align: center;
-}
+  .regulationsSection h4 {
+    font-size: 9pt;
+    margin-bottom: 5px;
+    color: black;
+    /* font-weight: bold; */
+  }
 
-.signatureLine {
-  border-bottom: 1px solid #000;
-  height: 40px;
-  margin-bottom: 8px;
-}
+  .repairInfo {
+    margin-left: 0;
+  }
 
-.signatureLabel {
-  font-weight: bold;
-  margin-bottom: 3px;
-  color: black;
-  font-size: 10pt;
-}
+  .repairInfo p {
+    margin: 1px 0;
+    color: black;
+    font-size: 8pt;
+    line-height: 1.2;
+  }
 
-.signatureDate {
-  font-size: 9pt;
-  color: black;
-}
+  .issueDescription {
+    padding: 0;
+    min-height: 15px;
+    color: black;
+    font-size: 8pt;
+    margin-top: 2px;
+  }
 
-.footer {
-  margin-top: 25px;
-  border-top: 1px solid #000;
-  padding-top: 10px;
-}
+  .regulationsList,
+  .rodoList {
+    margin: 5px 0;
+    padding-left: 18px;
+    font-size: 7pt;
+    line-height: 1.3;
+  }
 
-.footer p {
-  margin-bottom: 8px;
-  color: black;
-}
+  .regulationsList li,
+  .rodoList li {
+    margin-bottom: 3px;
+    color: black;
+  }
 
-.footer ul {
-  margin: 8px 0;
-  padding-left: 15px;
-}
+  .regulationsList ol[type="a"],
+  .rodoList ol[type="a"] {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-left: 18px;
+  }
 
-.footer li {
-  margin-bottom: 4px;
-  color: black;
-  font-size: 9pt;
-} 
+  .regulationsList ol[type="a"] li,
+  .rodoList ol[type="a"] li {
+    margin-bottom: 2px;
+  }
+
+  .consumerInfoSection p {
+    margin: 3px 0;
+    color: black;
+    font-size: 7pt;
+    line-height: 1.3;
+    text-align: justify;
+  }
+
+  .confirmationBox {
+    border: 1px solid #000;
+    padding: 8px;
+    margin: 10px 0;
+    background: white;
+    color: black;
+    font-size: 8pt;
+    line-height: 1.3;
+  }
+
+  .confirmationBox p {
+    margin: 0;
+    color: black;
+  }
+
+  .signatureSection {
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+
+  .signatureLine {
+    border-bottom: 1px dotted #000;
+    height: 25px;
+    margin-bottom: 3px;
+  }
+
+  .signatureLabel {
+    font-size: 8pt;
+    color: black;
+    margin: 0;
+  }
+
+  .logoTopLeft {
+    flex-shrink: 0;
+  }
+
+  .logoImage {
+    max-width: 150px;
+    height: auto;
+    display: block;
+  }

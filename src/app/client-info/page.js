@@ -20,6 +20,7 @@ function ClientInfoContent() {
     readyForPickup: "Gotowe do odbioru",
     collected: "Odebrane",
     cancelled: "Anulowane",
+    servkom: "SERVKOM",
   };
 
   useEffect(() => {

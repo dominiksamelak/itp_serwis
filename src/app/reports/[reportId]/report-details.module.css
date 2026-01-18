@@ -15,6 +15,7 @@
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .detailsCard h1 {
@@ -85,6 +86,9 @@
 }
 .status-border-cancelled {
   border-color: #ef4444;
+}
+.status-border-servkom {
+  border-color: #8b5cf6;
 }
 
 .clientLink .value {
@@ -201,6 +205,47 @@
   background-color: #15803d;
 }
 
+.editButton {
+  background-color: #6b7280;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  margin-top: 0.5rem;
+  align-self: flex-start;
+}
+
+.editButton:hover {
+  background-color: #4b5563;
+}
+
+.cancelButton {
+  background-color: #6b7280;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  width: auto;
+}
+
+.cancelButton:hover {
+  background-color: #4b5563;
+}
+
+.notesButtonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
 .saveButtonContainer {
   display: flex;
   flex-direction: row;
@@ -210,6 +255,41 @@
   flex-wrap: nowrap;
   width: 100%;
   margin-top: 1rem;
+}
+
+.floatingPrintButton {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 56px;
+  height: 56px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.floatingPrintButton:hover {
+  background-color: #2563eb;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+.floatingPrintButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.floatingPrintButton svg {
+  width: 24px;
+  height: 24px;
 }
 
 /* Mobile responsive styles */
@@ -229,5 +309,17 @@
 
   .saveButtonContainer button {
     width: 100% !important;
+  }
+
+  .floatingPrintButton {
+    bottom: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+  }
+
+  .floatingPrintButton svg {
+    width: 20px;
+    height: 20px;
   }
 }

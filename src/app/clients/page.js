@@ -68,6 +68,7 @@ export default function ClientsPage() {
     if (status === "readyForPickup") return "ready_for_pickup";
     if (status === "new") return "new";
     if (status === "cancelled") return "cancelled";
+    if (status === "servkom") return "servkom";
     return status;
   }
 
