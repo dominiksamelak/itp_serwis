@@ -31,6 +31,42 @@ export async function GET(request) {
     .select('*, clients(name, phone)')
     .ilike('order_number', `%${query}%`);
 
+  // Search for equipment by manufacturer, model, equipment_type, or serial_number
+  // Use separate queries like order_number search for reliability
+  const [manufacturerData, modelData, typeData, serialData] = await Promise.all([
+    supabase
+      .from('equipment_repairs')
+      .select('*, clients(name, phone)')
+      .ilike('manufacturer', `%${query}%`),
+    supabase
+      .from('equipment_repairs')
+      .select('*, clients(name, phone)')
+      .ilike('model', `%${query}%`),
+    supabase
+      .from('equipment_repairs')
+      .select('*, clients(name, phone)')
+      .ilike('equipment_type', `%${query}%`),
+    supabase
+      .from('equipment_repairs')
+      .select('*, clients(name, phone)')
+      .ilike('serial_number', `%${query}%`)
+  ]);
+
+  // Combine all results and remove duplicates by ID
+  const allEquipmentResults = [
+    ...(manufacturerData.data || []),
+    ...(modelData.data || []),
+    ...(typeData.data || []),
+    ...(serialData.data || [])
+  ];
+  
+  const uniqueEquipmentResults = Array.from(
+    new Map(allEquipmentResults.map(item => [item.id, item])).values()
+  );
+  
+  const repairsByEquipment = uniqueEquipmentResults;
+
+
   const results = {
     clientsByName: clientsByName || [],
     clientsByPhone: (clientsByPhone || []).map(client => {
@@ -41,6 +77,7 @@ export async function GET(request) {
         }
     }),
     repairsByOrder: repairsByOrder || [],
+    repairsByEquipment: repairsByEquipment || [],
   };
 
   return NextResponse.json(results);

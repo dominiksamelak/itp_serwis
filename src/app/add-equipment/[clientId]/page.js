@@ -10,6 +10,7 @@ import EquipmentReceiptPrint from "../../components/EquipmentReceiptPrint";
 const EQUIPMENT_TYPES = [
   "Laptop",
   "PC",
+  "Drukarka",
   "Konsola",
   "Telefon",
   "Tablet",

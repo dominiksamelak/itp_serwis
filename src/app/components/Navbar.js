@@ -63,7 +63,7 @@ export default function Navbar() {
           <li><Link href="/home" className={styles.navLink}>Strona główna</Link></li>
           <li><Link href="/reports" className={styles.navLink}>Zgłoszenia</Link></li>
           <li><Link href="/clients" className={styles.navLink}>Klienci</Link></li>
-          <li><Link href="/add-client" className={styles.button}>Dodaj klienta</Link></li>
+          {/* <li><Link href="/add-client" className={styles.button}>Dodaj klienta</Link></li> */}
           <li><Link href="/add-report" className={styles.button}>Dodaj zgłoszenie</Link></li>
         </ul>
         
@@ -127,6 +127,17 @@ export default function Navbar() {
                         </span>
                      </Link>
                    ))}
+                </div>
+              )}
+              {searchResults.repairsByEquipment && searchResults.repairsByEquipment.length > 0 && (
+                <div className={styles.resultsSection}>
+                  <h5>Sprzęt</h5>
+                  {searchResults.repairsByEquipment.map(r => (
+                    <Link key={r.id} href={`/reports/${r.id}`} onClick={closeDropdown} className={styles.resultItem}>
+                      <span><strong>Numer zgłoszenia:</strong> {r.order_number}</span>
+                      <span><strong>Klient:</strong> {r.clients?.name || '-'} {r.clients?.phone ? `(${r.clients.phone})` : ''}</span>
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
