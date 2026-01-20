@@ -129,6 +129,17 @@ export default function Navbar() {
                    ))}
                 </div>
               )}
+              {searchResults.repairsByManufacturer && searchResults.repairsByManufacturer.length > 0 && (
+                <div className={styles.resultsSection}>
+                  <h5>Producent</h5>
+                  {searchResults.repairsByManufacturer.map(r => (
+                    <Link key={r.id} href={`/reports/${r.id}`} onClick={closeDropdown} className={styles.resultItem}>
+                      <span><strong>Numer zgłoszenia:</strong> {r.order_number}</span>
+                      <span><strong>Klient:</strong> {r.clients?.name || '-'} {r.clients?.phone ? `(${r.clients.phone})` : ''}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
               {searchResults.repairsByEquipment && searchResults.repairsByEquipment.length > 0 && (
                 <div className={styles.resultsSection}>
                   <h5>Sprzęt</h5>

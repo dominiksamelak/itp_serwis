@@ -65,12 +65,14 @@ export default function RepairReleasePrint({ repair, summary, cost }) {
       <div className={styles.repairInfoSection}>
         <h3>Informacje o naprawie</h3>
         <div className={styles.repairInfo}>
-          <p><strong>Odbierający:</strong> {repair.clients?.name || '-'}</p>
+          <p><strong>Klient:</strong> {repair.clients?.name || '-'}</p>
           <p><strong>Dane kontaktowe:</strong> tel.:{repair.clients?.phone ? (repair.clients.phone.startsWith('+48') ? ` ${repair.clients.phone}` : ` +48 ${repair.clients.phone}`) : '-'}{repair.clients?.email ? ` ${repair.clients.email}` : ''}</p>
           <p><strong>Data przyjęcia:</strong> {formatDate(repair.created_at)}</p>
           <p><strong>Data zakończenia naprawy:</strong> {formatDate(repair.updated_at || repair.created_at)}</p>
           <p><strong>Data wydania:</strong> {formatDateTime(repair.collected_at || new Date())}</p>
-          <p><strong>Rodzaj:</strong> {getEquipmentType()}</p>
+          <p><strong>Typ sprzętu:</strong> {repair.equipment_type || '-'}</p>
+          <p><strong>Producent:</strong> {repair.manufacturer || '-'}</p>
+          <p><strong>Model:</strong> {repair.model || '-'}</p>
           <p><strong>Numer seryjny:</strong> {repair.serial_number || '-'}</p>
         </div>
       </div>

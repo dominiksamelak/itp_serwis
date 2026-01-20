@@ -184,8 +184,14 @@
   flex-shrink: 0;
 }
 
-.saveButton:hover {
+.saveButton:hover:not(:disabled) {
   background-color: #2563eb;
+}
+
+.saveButton:disabled {
+  background-color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .printButton {

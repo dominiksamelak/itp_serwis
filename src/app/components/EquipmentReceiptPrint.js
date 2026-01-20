@@ -52,9 +52,10 @@ export default function EquipmentReceiptPrint({ client, equipment, orderNumber }
           <p><strong>Zlecający:</strong> {client?.name || '-'}</p>
           <p><strong>Dane kontaktowe:</strong> tel.:{client?.phone ? (client.phone.startsWith('+48') ? ` ${client.phone}` : ` +48 ${client.phone}`) : '-'}{client?.email ? ` ${client.email}` : ''}</p>
           <p><strong>Data przyjęcia:</strong> {formatDate(equipment.created_at || new Date())}</p>
-          <p><strong>Rodzaj:</strong> {getEquipmentType()}</p>
+          <p><strong>Typ sprzętu:</strong> {equipment.equipment_type || '-'}</p>
+          <p><strong>Producent:</strong> {equipment.manufacturer || '-'}</p>
+          <p><strong>Model:</strong> {equipment.model || '-'}</p>
           <p><strong>Numer seryjny:</strong> {equipment.serial_number || '-'}</p>
-          <p><strong>Sposób odbioru:</strong> Osobiście</p>
           <p><strong>Zasilacz w zestawie:</strong> {equipment.power_adapter_included ? 'Tak' : 'Nie'}</p>
           <p><strong>Kopia danych:</strong> {equipment.data_backup_requested ? 'Tak' : 'Nie'}</p>
         </div>

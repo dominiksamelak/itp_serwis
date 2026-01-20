@@ -51,6 +51,14 @@ export async function GET(request) {
       .select('*, clients(name, phone)')
       .ilike('serial_number', `%${query}%`)
   ]);
+  
+  // Log results for debugging
+  if (manufacturerData.error) {
+    console.error('Manufacturer search error:', manufacturerData.error);
+  }
+  if (modelData.error) {
+    console.error('Model search error:', modelData.error);
+  }
 
   // Combine all results and remove duplicates by ID
   const allEquipmentResults = [
@@ -78,6 +86,7 @@ export async function GET(request) {
     }),
     repairsByOrder: repairsByOrder || [],
     repairsByEquipment: repairsByEquipment || [],
+    repairsByManufacturer: manufacturerData.data || [],
   };
 
   return NextResponse.json(results);

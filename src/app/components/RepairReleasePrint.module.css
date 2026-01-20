@@ -124,7 +124,7 @@
   .signatures {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 50px;
     margin-bottom: 10px;
   }
 
@@ -271,7 +271,7 @@
 .signatures {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 50px;
   margin-bottom: 10px;
 }
 

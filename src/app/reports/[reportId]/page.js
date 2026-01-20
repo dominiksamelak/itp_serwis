@@ -256,10 +256,16 @@ export default function ReportDetailsPage() {
               </Link>
             </div>
             <div className={styles.detailItem}>
-              <span className={styles.label}>Sprzęt</span>
-              <span className={styles.value}>
-                {repair.manufacturer} {repair.model}
-              </span>
+              <span className={styles.label}>Typ sprzętu</span>
+              <span className={styles.value}>{repair.equipment_type || "-"}</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.label}>Producent</span>
+              <span className={styles.value}>{repair.manufacturer || "-"}</span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.label}>Model</span>
+              <span className={styles.value}>{repair.model || "-"}</span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.label}>Numer seryjny</span>
@@ -282,6 +288,10 @@ export default function ReportDetailsPage() {
               <span className={styles.value}>
                 {new Date(repair.created_at).toLocaleString()}
               </span>
+            </div>
+            <div className={styles.detailItem}>
+              <span className={styles.label}>Przyjął</span>
+              <span className={styles.value}>{repair.assigned_to || "-"}</span>
             </div>
             <div className={`${styles.detailItem} ${styles.gridColSpan2}`}>
               <span className={styles.label}>Notatki</span>
@@ -365,6 +375,7 @@ export default function ReportDetailsPage() {
                       <button
                         className={styles.saveButton}
                         onClick={handleSaveSummary}
+                        disabled={!cost || cost.trim() === ''}
                       >
                         Zapisz podsumowanie
                       </button>
