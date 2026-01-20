@@ -289,7 +289,7 @@ export default function AddEquipmentPage({ params }) {
           <div className={styles.formGroup}>
             <label>Przyjmował</label>
             <div className={styles.radioGroup}>
-              {["Mariusz", "Krzysztof", "Dominik"].map((name) => (
+              {["Mariusz", "Dominik", "Krzysztof"].map((name) => (
                 <label key={name} className={styles.radioLabel}>
                   <input
                     type="radio"

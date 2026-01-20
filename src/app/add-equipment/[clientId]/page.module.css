@@ -110,6 +110,14 @@
   display: flex;
   gap: 1.5rem;
   margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .radioGroup {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
 
 .radioLabel {
